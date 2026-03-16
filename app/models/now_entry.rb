@@ -1,0 +1,2 @@
+class NowEntry < ApplicationRecord
+end
