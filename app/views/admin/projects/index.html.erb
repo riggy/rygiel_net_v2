@@ -1,0 +1,42 @@
+<% content_for :title, "Projects" %>
+
+<div class="admin-page-header">
+  <h1 class="admin-page-title">Projects</h1>
+  <%= link_to "New project", new_admin_project_path, class: "btn btn-primary btn-sm" %>
+</div>
+
+<% if @projects.any? %>
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Tags</th>
+        <th>Featured</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @projects.each do |project| %>
+        <tr>
+          <td><%= project.name %></td>
+          <td style="color: var(--text-subtle); font-size: 0.8125rem;"><%= project.tech_tags %></td>
+          <td>
+            <% if project.featured? %>
+              <span class="badge badge-featured">Featured</span>
+            <% else %>
+              <span class="badge badge-draft">No</span>
+            <% end %>
+          </td>
+          <td>
+            <div class="admin-table-actions">
+              <%= link_to "Edit", edit_admin_project_path(project), class: "btn btn-secondary btn-sm" %>
+              <%= button_to "Delete", admin_project_path(project), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "Delete \"#{project.name}\"?" } %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="empty-state">No projects yet. <%= link_to "Create one", new_admin_project_path %>.</p>
+<% end %>

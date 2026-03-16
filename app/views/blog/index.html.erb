@@ -1,0 +1,49 @@
+<% content_for :title, "Blog — Krzysztof Rygielski" %>
+
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-title">Blog</h1>
+    <p class="page-subtitle"><%= @total %> <%= "post".pluralize(@total) %></p>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="container">
+    <% if @posts.any? %>
+      <div class="blog-index-list">
+        <% @posts.each do |post| %>
+          <%= link_to blog_post_path(post), class: "blog-card" do %>
+            <p class="blog-card-title"><%= post.title %></p>
+            <p class="blog-card-meta"><%= post.published_at&.strftime("%B %-d, %Y") %></p>
+          <% end %>
+        <% end %>
+      </div>
+
+      <% if @total_pages > 1 %>
+        <nav class="pagination">
+          <% if @page > 1 %>
+            <%= link_to "←", blog_path(page: @page - 1) %>
+          <% else %>
+            <span class="disabled">←</span>
+          <% end %>
+
+          <% (1..@total_pages).each do |p| %>
+            <% if p == @page %>
+              <span class="current"><%= p %></span>
+            <% else %>
+              <%= link_to p, blog_path(page: p) %>
+            <% end %>
+          <% end %>
+
+          <% if @page < @total_pages %>
+            <%= link_to "→", blog_path(page: @page + 1) %>
+          <% else %>
+            <span class="disabled">→</span>
+          <% end %>
+        </nav>
+      <% end %>
+    <% else %>
+      <p class="empty-state">No posts published yet.</p>
+    <% end %>
+  </div>
+</div>

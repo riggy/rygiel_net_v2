@@ -1,0 +1,39 @@
+<% content_for :title, "Now Entries" %>
+
+<div class="admin-page-header">
+  <h1 class="admin-page-title">Now</h1>
+  <%= link_to "New entry", new_admin_now_entry_path, class: "btn btn-primary btn-sm" %>
+</div>
+
+<% if @now_entries.any? %>
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Working on</th>
+        <th>Reading</th>
+        <th>Created</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @now_entries.each_with_index do |entry, i| %>
+        <tr>
+          <td><%= truncate(entry.working_on, length: 60) %></td>
+          <td><%= entry.reading %></td>
+          <td style="color: var(--text-subtle); font-size: 0.8125rem;">
+            <%= entry.created_at.strftime("%b %-d, %Y") %>
+            <% if i == 0 %><span class="badge badge-published" style="margin-left:0.5rem;">Current</span><% end %>
+          </td>
+          <td>
+            <div class="admin-table-actions">
+              <%= link_to "Edit", edit_admin_now_entry_path(entry), class: "btn btn-secondary btn-sm" %>
+              <%= button_to "Delete", admin_now_entry_path(entry), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "Delete this entry?" } %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="empty-state">No entries yet. <%= link_to "Create one", new_admin_now_entry_path %>.</p>
+<% end %>
