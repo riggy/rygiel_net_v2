@@ -1,0 +1,126 @@
+<% content_for :title, "Krzysztof Rygielski — Developer" %>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Krzysztof Rygielski</h1>
+    <p class="hero-tagline">Software developer building clean, reliable things for the web.</p>
+    <div class="hero-cta">
+      <%= link_to "View Work", "#projects", class: "btn btn-primary" %>
+      <%= link_to "Get in Touch", "#contact", class: "btn btn-secondary" %>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="section">
+  <div class="container">
+    <p class="section-label">About</p>
+    <div class="about-text">
+      <p>I'm a software developer with a focus on backend systems and web applications. I enjoy working close to the metal — clean architecture, fast deployments, and tools that stay out of the way.</p>
+      <p>Currently building with Ruby on Rails, leaning on modern defaults: SQLite, Solid Queue, Kamal. I believe in shipping small, iterating fast, and keeping complexity budget under control.</p>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="section">
+  <div class="container">
+    <p class="section-label">Skills</p>
+    <div class="skills-grid">
+      <% %w[Ruby Rails PostgreSQL SQLite Docker Linux Git REST\ APIs Hotwire Stimulus Kamal RSpec].each do |skill| %>
+        <span class="skill-tag"><%= skill %></span>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="section">
+  <div class="container">
+    <p class="section-label">Projects</p>
+    <% if @projects.any? %>
+      <div class="projects-grid">
+        <% @projects.each do |project| %>
+          <div class="project-card">
+            <div class="project-header">
+              <span class="project-name"><%= project.name %></span>
+              <% if project.url.present? %>
+                <%= link_to "↗", project.url, class: "project-link", target: "_blank", rel: "noopener noreferrer" %>
+              <% end %>
+            </div>
+            <p class="project-description"><%= project.description %></p>
+            <% if project.tag_list.any? %>
+              <div class="tech-tags">
+                <% project.tag_list.each do |tag| %>
+                  <span class="tech-tag"><%= tag %></span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="empty-state">Projects coming soon.</p>
+    <% end %>
+  </div>
+</section>
+
+<section id="blog" class="section">
+  <div class="container">
+    <p class="section-label">Blog</p>
+    <% if @posts.any? %>
+      <div class="blog-list">
+        <% @posts.each do |post| %>
+          <%= link_to blog_post_path(post), class: "blog-card" do %>
+            <p class="blog-card-title"><%= post.title %></p>
+            <p class="blog-card-meta"><%= post.published_at&.strftime("%B %-d, %Y") %></p>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="blog-view-all">
+        <%= link_to "All posts →", blog_path, class: "btn btn-secondary btn-sm" %>
+      </div>
+    <% else %>
+      <p class="empty-state">No posts yet.</p>
+    <% end %>
+  </div>
+</section>
+
+<section id="now" class="section">
+  <div class="container">
+    <p class="section-label">Now</p>
+    <% if @now_entry %>
+      <div class="now-grid">
+        <% if @now_entry.working_on.present? %>
+          <div class="now-item">
+            <p class="now-label">Working on</p>
+            <p class="now-value"><%= @now_entry.working_on %></p>
+          </div>
+        <% end %>
+        <% if @now_entry.reading.present? %>
+          <div class="now-item">
+            <p class="now-label">Reading</p>
+            <p class="now-value"><%= @now_entry.reading %></p>
+          </div>
+        <% end %>
+        <% if @now_entry.learning.present? %>
+          <div class="now-item">
+            <p class="now-label">Learning</p>
+            <p class="now-value"><%= @now_entry.learning %></p>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="empty-state">Nothing here yet.</p>
+    <% end %>
+  </div>
+</section>
+
+<section id="contact" class="section">
+  <div class="container">
+    <p class="section-label">Contact</p>
+    <p class="contact-text">Open to interesting projects and conversations. Reach out via email or find me online.</p>
+    <div class="contact-links">
+      <a href="mailto:hello@rygiel.net" class="contact-link">hello@rygiel.net</a>
+      <a href="https://github.com/" class="contact-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://linkedin.com/" class="contact-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </div>
+  </div>
+</section>

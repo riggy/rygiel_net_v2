@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Admin — <%= content_for(:title) || "Dashboard" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="admin-body">
+    <header class="admin-header">
+      <div class="admin-header-inner">
+        <span class="admin-brand">Admin</span>
+        <nav class="admin-nav">
+          <%= link_to "Posts", admin_posts_path, class: "admin-nav-link #{"active" if controller_name == "posts"}" %>
+          <%= link_to "Projects", admin_projects_path, class: "admin-nav-link #{"active" if controller_name == "projects"}" %>
+          <%= link_to "Now", admin_now_entries_path, class: "admin-nav-link #{"active" if controller_name == "now_entries"}" %>
+          <%= link_to "← Site", root_path, class: "admin-nav-link" %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <% if notice %>
+        <div class="admin-notice"><%= notice %></div>
+      <% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>
