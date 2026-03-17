@@ -11,18 +11,8 @@
 
 <%= form_with model: [:admin, now_entry], class: "admin-form" do |f| %>
   <div class="form-group">
-    <%= f.label :working_on, "Working on", class: "form-label" %>
-    <%= f.text_area :working_on, class: "form-textarea prose", rows: 4, autofocus: true, placeholder: "What are you currently working on?" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :reading, class: "form-label" %>
-    <%= f.text_field :reading, class: "form-input", placeholder: "Book or article title" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :learning, class: "form-label" %>
-    <%= f.text_field :learning, class: "form-input", placeholder: "Technology or skill you're exploring" %>
+    <%= f.label :content, "Now", class: "form-label" %>
+    <%= f.text_area :content, class: "form-textarea prose", rows: 6, autofocus: true, placeholder: "What are you working on, reading, learning right now?" %>
   </div>
 
   <div class="form-actions">

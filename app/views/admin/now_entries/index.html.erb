@@ -9,8 +9,7 @@
   <table class="admin-table">
     <thead>
       <tr>
-        <th>Working on</th>
-        <th>Reading</th>
+        <th>Content</th>
         <th>Created</th>
         <th></th>
       </tr>
@@ -18,8 +17,7 @@
     <tbody>
       <% @now_entries.each_with_index do |entry, i| %>
         <tr>
-          <td><%= truncate(entry.working_on, length: 60) %></td>
-          <td><%= entry.reading %></td>
+          <td><%= truncate(entry.content, length: 80) %></td>
           <td style="color: var(--text-subtle); font-size: 0.8125rem;">
             <%= entry.created_at.strftime("%b %-d, %Y") %>
             <% if i == 0 %><span class="badge badge-published" style="margin-left:0.5rem;">Current</span><% end %>

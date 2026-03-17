@@ -40,6 +40,6 @@ class Admin::NowEntriesController < Admin::BaseController
   end
 
   def now_entry_params
-    params.require(:now_entry).permit(:working_on, :reading, :learning)
+    params.require(:now_entry).permit(:content)
   end
 end

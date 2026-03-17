@@ -110,9 +110,7 @@ Project.create!([
 ])
 
 NowEntry.create!(
-  working_on: "Building rygiel.net v2 — a clean Rails 8 personal site with a blog and project showcase. Focusing on simplicity, fast deploys, and keeping the stack boring.",
-  reading: "The Pragmatic Programmer — David Thomas & Andrew Hunt",
-  learning: "SQLite internals and WAL-mode tuning for single-server production deployments."
+  content: "Building rygiel.net v2 — a clean Rails 8 personal site with a blog and project showcase. Reading The Pragmatic Programmer. Digging into SQLite internals and WAL-mode tuning for single-server production deployments."
 )
 
 puts "Seeded: #{Post.count} posts, #{Project.count} projects, #{NowEntry.count} now entries"
