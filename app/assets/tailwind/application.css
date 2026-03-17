@@ -134,4 +134,35 @@
     background: #0d1829;
     font-weight: 600;
   }
+
+  .post-body-inline {
+    padding: 0;
+  }
+
+  .hero-bg {
+    position: relative;
+    overflow: hidden;
+    background-image: radial-gradient(circle, rgba(59, 130, 246, 0.11) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 55% 65% at 72% 48%, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+    animation: hero-glow 8s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-bg > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes hero-glow {
+    from { opacity: 0.55; transform: scale(1); }
+    to   { opacity: 1;    transform: scale(1.1) translateX(-1.5%); }
+  }
 }
