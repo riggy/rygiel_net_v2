@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg:           #0d0d0d;
+  --color-card:         #1a1a1a;
+  --color-card-hover:   #222222;
+  --color-surface:      #f0f0f0;
+  --color-muted:        #e0e0e0;
+  --color-subtle:       #666666;
+  --color-accent:       #3b82f6;
+  --color-accent-hover: #2563eb;
+  --color-border:       #1e1e1e;
+  --color-border-hover: #2e2e2e;
+  --color-label:        #60a5fa;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --width-container:    1100px;
+  --text-hero:   clamp(2.75rem, 7vw, 5.5rem);
+  --text-page-h: clamp(1.75rem, 4vw, 2.5rem);
+  --text-post-h: clamp(1.5rem, 4vw, 2.75rem);
+}
+
+@layer components {
+  .post-body {
+    max-width: 760px;
+    padding: 3.5rem 0 5rem;
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: #e0e0e0;
+  }
+
+  .post-body h1,
+  .post-body h2,
+  .post-body h3,
+  .post-body h4 {
+    color: #f0f0f0;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 2.25rem 0 0.875rem;
+    line-height: 1.25;
+  }
+
+  .post-body h1 { font-size: 1.875rem; }
+  .post-body h2 { font-size: 1.5rem; }
+  .post-body h3 { font-size: 1.2rem; }
+  .post-body h4 { font-size: 1rem; }
+
+  .post-body p {
+    margin-bottom: 1.375rem;
+  }
+
+  .post-body a {
+    color: #3b82f6;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .post-body a:hover {
+    border-bottom-color: #3b82f6;
+  }
+
+  .post-body code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.875em;
+    background: #1a1a1a;
+    border: 1px solid #1e1e1e;
+    padding: 0.15em 0.45em;
+    border-radius: 3px;
+    color: #e2e8f0;
+  }
+
+  .post-body pre {
+    background: #1a1a1a;
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    padding: 1.375rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+  }
+
+  .post-body pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .post-body blockquote {
+    border-left: 2px solid #3b82f6;
+    padding: 0.125rem 0 0.125rem 1.25rem;
+    color: #e0e0e0;
+    margin: 1.75rem 0;
+  }
+
+  .post-body ul,
+  .post-body ol {
+    margin: 0 0 1.375rem 1.5rem;
+  }
+
+  .post-body li {
+    margin-bottom: 0.4rem;
+  }
+
+  .post-body hr {
+    border: none;
+    border-top: 1px solid #1e1e1e;
+    margin: 2.5rem 0;
+  }
+
+  .post-body img {
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid #1e1e1e;
+  }
+
+  .post-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .post-body th,
+  .post-body td {
+    text-align: left;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid #1e1e1e;
+  }
+
+  .post-body th {
+    color: #f0f0f0;
+    background: #1a1a1a;
+    font-weight: 600;
+  }
+}
