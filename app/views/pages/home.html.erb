@@ -2,10 +2,10 @@
 
 <section class="min-h-screen flex items-center border-b border-border">
   <div class="max-w-[1100px] mx-auto px-6">
-    <h1 class="text-hero font-bold tracking-[-0.035em] leading-[1.02] mb-5">Krzysztof Rygielski</h1>
-    <p class="text-muted mb-10 max-w-[540px] leading-relaxed">Software developer building clean, reliable things for the web.</p>
+    <h1 class="text-hero font-bold tracking-[-0.035em] leading-[1.02] mb-5">Hi, I'm <span class="text-accent">Krzysztof Rygielski.</span></h1>
+    <p class="text-surface/80 mb-10 max-w-[540px] leading-relaxed">Software developer building clean, reliable things for the web.</p>
     <div class="flex gap-3.5 flex-wrap">
-      <%= link_to "View Work", "#projects", class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-accent text-white border border-accent hover:bg-accent-hover hover:border-accent-hover" %>
+      <%= link_to "View Work", "#projects", class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-gradient-to-r from-[#1a6af5] to-[#2ea8ff] text-white border-transparent shadow-[0_0_18px_rgba(59,130,246,0.35)] hover:shadow-[0_0_24px_rgba(59,130,246,0.5)] hover:brightness-110" %>
       <%= link_to "Get in Touch", "#contact", class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-transparent text-surface border border-border-hover hover:border-muted" %>
     </div>
   </div>
@@ -13,7 +13,7 @@
 
 <section id="about" class="py-20 border-b border-border">
   <div class="max-w-[1100px] mx-auto px-6">
-    <p class="text-[0.6875rem] font-semibold tracking-[0.12em] uppercase text-label mb-10">About</p>
+    <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">About Me</h2>
     <div class="max-w-[680px] text-[1.0625rem] leading-[1.8] text-muted">
       <p>I'm a software developer with a focus on backend systems and web applications. I enjoy working close to the metal — clean architecture, fast deployments, and tools that stay out of the way.</p>
       <p class="mt-5">Currently building with Ruby on Rails, leaning on modern defaults: SQLite, Solid Queue, Kamal. I believe in shipping small, iterating fast, and keeping complexity budget under control.</p>
@@ -23,7 +23,7 @@
 
 <section id="skills" class="py-20 border-b border-border">
   <div class="max-w-[1100px] mx-auto px-6">
-    <p class="text-[0.6875rem] font-semibold tracking-[0.12em] uppercase text-label mb-10">Skills</p>
+    <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">Skills</h2>
     <div class="flex flex-wrap gap-2 max-w-[700px]">
       <% %w[Ruby Rails PostgreSQL SQLite Docker Linux Git REST\ APIs Hotwire Stimulus Kamal RSpec].each do |skill| %>
         <span class="bg-card border border-border text-muted px-3.5 py-1.5 rounded-full text-[0.8125rem] font-medium"><%= skill %></span>
@@ -34,7 +34,7 @@
 
 <section id="projects" class="py-20 border-b border-border">
   <div class="max-w-[1100px] mx-auto px-6">
-    <p class="text-[0.6875rem] font-semibold tracking-[0.12em] uppercase text-label mb-10">Projects</p>
+    <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">Featured Projects</h2>
     <% if @projects.any? %>
       <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4">
         <% @projects.each do |project| %>
@@ -64,7 +64,7 @@
 
 <section id="blog" class="py-20 border-b border-border">
   <div class="max-w-[1100px] mx-auto px-6">
-    <p class="text-[0.6875rem] font-semibold tracking-[0.12em] uppercase text-label mb-10">Blog</p>
+    <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">Blog</h2>
     <% if @posts.any? %>
       <div class="flex flex-col gap-3.5 max-w-[760px]">
         <% @posts.each do |post| %>
@@ -85,7 +85,7 @@
 
 <section id="now" class="py-20 border-b border-border">
   <div class="max-w-[1100px] mx-auto px-6">
-    <p class="text-[0.6875rem] font-semibold tracking-[0.12em] uppercase text-label mb-10">Now</p>
+    <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">Now</h2>
     <% if @now_entry %>
       <p class="max-w-[680px] text-[1.0625rem] leading-[1.8] text-muted"><%= @now_entry.content %></p>
     <% else %>
@@ -96,7 +96,7 @@
 
 <section id="contact" class="py-20">
   <div class="max-w-[1100px] mx-auto px-6">
-    <p class="text-[0.6875rem] font-semibold tracking-[0.12em] uppercase text-label mb-10">Contact</p>
+    <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">Contact</h2>
     <p class="text-muted mb-7 max-w-[500px] text-[1.0625rem] leading-[1.7]">Open to interesting projects and conversations. Reach out via email or find me online.</p>
     <div class="flex gap-5 flex-wrap">
       <a href="mailto:hello@rygiel.net" class="text-muted text-sm font-medium no-underline hover:text-surface border-b border-transparent hover:border-border-hover transition-colors duration-150">hello@rygiel.net</a>
