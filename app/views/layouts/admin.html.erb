@@ -8,26 +8,26 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="admin-body">
-    <header class="admin-header">
-      <div class="admin-header-inner">
-        <span class="admin-brand">Admin</span>
-        <nav class="admin-nav">
-          <%= link_to "Posts", admin_posts_path, class: "admin-nav-link #{"active" if controller_name == "posts"}" %>
-          <%= link_to "Projects", admin_projects_path, class: "admin-nav-link #{"active" if controller_name == "projects"}" %>
-          <%= link_to "Now", admin_now_entries_path, class: "admin-nav-link #{"active" if controller_name == "now_entries"}" %>
-          <%= link_to "← Site", root_path, class: "admin-nav-link" %>
+  <body class="bg-bg text-surface font-sans text-[15px] antialiased min-h-screen">
+    <header class="bg-card border-b border-border sticky top-0 z-50">
+      <div class="max-w-[1200px] mx-auto px-6 h-[52px] flex items-center justify-between">
+        <span class="font-bold text-sm tracking-[0.05em] text-subtle uppercase">Admin</span>
+        <nav class="flex gap-1">
+          <%= link_to "Posts", admin_posts_path, class: "text-muted no-underline text-[0.8125rem] font-medium px-3 py-1.5 rounded transition-all duration-150 hover:text-surface hover:bg-card-hover #{controller_name == "posts" ? "text-surface bg-card-hover" : ""}" %>
+          <%= link_to "Projects", admin_projects_path, class: "text-muted no-underline text-[0.8125rem] font-medium px-3 py-1.5 rounded transition-all duration-150 hover:text-surface hover:bg-card-hover #{controller_name == "projects" ? "text-surface bg-card-hover" : ""}" %>
+          <%= link_to "Now", admin_now_entries_path, class: "text-muted no-underline text-[0.8125rem] font-medium px-3 py-1.5 rounded transition-all duration-150 hover:text-surface hover:bg-card-hover #{controller_name == "now_entries" ? "text-surface bg-card-hover" : ""}" %>
+          <%= link_to "← Site", root_path, class: "text-muted no-underline text-[0.8125rem] font-medium px-3 py-1.5 rounded transition-all duration-150 hover:text-surface hover:bg-card-hover" %>
         </nav>
       </div>
     </header>
 
-    <main class="admin-main">
+    <main class="max-w-[1200px] mx-auto px-6 py-8 pb-16">
       <% if notice %>
-        <div class="admin-notice"><%= notice %></div>
+        <div class="bg-blue-500/8 border border-blue-500/20 text-accent px-4 py-3 rounded text-sm mb-6"><%= notice %></div>
       <% end %>
       <%= yield %>
     </main>

@@ -1,36 +1,36 @@
 <% if post.errors.any? %>
-  <div class="form-errors">
+  <div class="bg-red-500/8 border border-red-500/20 text-red-400 px-4 py-3 rounded text-sm mb-6">
     <strong><%= post.errors.count %> <%= "error".pluralize(post.errors.count) %> prevented saving:</strong>
-    <ul>
+    <ul class="mt-1.5 ml-4">
       <% post.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li class="mb-1"><%= msg %></li>
       <% end %>
     </ul>
   </div>
 <% end %>
 
-<%= form_with model: [:admin, post], class: "admin-form" do |f| %>
-  <div class="form-group">
-    <%= f.label :title, class: "form-label" %>
-    <%= f.text_field :title, class: "form-input", autofocus: true, placeholder: "Post title" %>
+<%= form_with model: [:admin, post], class: "max-w-[760px]" do |f| %>
+  <div class="mb-5">
+    <%= f.label :title, class: "block text-[0.8125rem] font-medium text-muted mb-2" %>
+    <%= f.text_field :title, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none", autofocus: true, placeholder: "Post title" %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :body, class: "form-label" do %>
-      Body <span class="hint">(Markdown)</span>
+  <div class="mb-5">
+    <%= f.label :body, class: "block text-[0.8125rem] font-medium text-muted mb-2" do %>
+      Body <span class="text-subtle font-normal ml-1">(Markdown)</span>
     <% end %>
-    <%= f.text_area :body, class: "form-textarea", rows: 20, placeholder: "Write in Markdown..." %>
+    <%= f.text_area :body, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[220px] leading-relaxed font-mono text-[0.8125rem]", rows: 20, placeholder: "Write in Markdown..." %>
   </div>
 
-  <div class="form-group">
-    <div class="form-checkbox-row">
-      <%= f.check_box :published, class: "form-checkbox" %>
-      <%= f.label :published, "Published", class: "form-label" style: "margin-bottom:0" %>
+  <div class="mb-5">
+    <div class="flex items-center gap-2.5">
+      <%= f.check_box :published, class: "w-4 h-4 accent-accent cursor-pointer" %>
+      <%= f.label :published, "Published", class: "block text-[0.8125rem] font-medium text-muted" %>
     </div>
   </div>
 
-  <div class="form-actions">
-    <%= f.submit post.persisted? ? "Save changes" : "Create post", class: "btn btn-primary" %>
-    <%= link_to "Cancel", admin_posts_path, class: "btn btn-secondary" %>
+  <div class="flex items-center gap-3 mt-7 pt-7 border-t border-border">
+    <%= f.submit post.persisted? ? "Save changes" : "Create post", class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-accent text-white border border-accent hover:bg-accent-hover hover:border-accent-hover cursor-pointer" %>
+    <%= link_to "Cancel", admin_posts_path, class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-transparent text-surface border border-border-hover hover:border-muted" %>
   </div>
 <% end %>

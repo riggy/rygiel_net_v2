@@ -1,17 +1,17 @@
 <% content_for :title, "#{@post.title} — Krzysztof Rygielski" %>
 <% content_for :description, @post.title %>
 
-<div class="post-header">
-  <div class="container">
-    <%= link_to "← Blog", blog_path, class: "back-link" %>
-    <div class="post-header-inner">
-      <h1 class="post-title"><%= @post.title %></h1>
-      <p class="post-meta"><%= @post.published_at&.strftime("%B %-d, %Y") %></p>
+<div class="pt-32 pb-14 border-b border-border">
+  <div class="max-w-[1100px] mx-auto px-6">
+    <%= link_to "← Blog", blog_path, class: "inline-flex items-center gap-1.5 text-muted text-sm mb-6 no-underline hover:text-surface transition-colors duration-150" %>
+    <div class="max-w-[760px]">
+      <h1 class="text-post-h font-bold tracking-tight leading-[1.15] mb-4"><%= @post.title %></h1>
+      <p class="text-subtle text-sm"><%= @post.published_at&.strftime("%B %-d, %Y") %></p>
     </div>
   </div>
 </div>
 
-<div class="container">
+<div class="max-w-[1100px] mx-auto px-6">
   <div class="post-body">
     <%= markdown(@post.body) %>
   </div>

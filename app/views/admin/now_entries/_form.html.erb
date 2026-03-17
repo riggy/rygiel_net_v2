@@ -1,22 +1,22 @@
 <% if now_entry.errors.any? %>
-  <div class="form-errors">
+  <div class="bg-red-500/8 border border-red-500/20 text-red-400 px-4 py-3 rounded text-sm mb-6">
     <strong><%= now_entry.errors.count %> <%= "error".pluralize(now_entry.errors.count) %> prevented saving:</strong>
-    <ul>
+    <ul class="mt-1.5 ml-4">
       <% now_entry.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li class="mb-1"><%= msg %></li>
       <% end %>
     </ul>
   </div>
 <% end %>
 
-<%= form_with model: [:admin, now_entry], class: "admin-form" do |f| %>
-  <div class="form-group">
-    <%= f.label :content, "Now", class: "form-label" %>
-    <%= f.text_area :content, class: "form-textarea prose", rows: 6, autofocus: true, placeholder: "What are you working on, reading, learning right now?" %>
+<%= form_with model: [:admin, now_entry], class: "max-w-[760px]" do |f| %>
+  <div class="mb-5">
+    <%= f.label :content, "Now", class: "block text-[0.8125rem] font-medium text-muted mb-2" %>
+    <%= f.text_area :content, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[100px] leading-relaxed", rows: 6, autofocus: true, placeholder: "What are you working on, reading, learning right now?" %>
   </div>
 
-  <div class="form-actions">
-    <%= f.submit now_entry.persisted? ? "Save changes" : "Create entry", class: "btn btn-primary" %>
-    <%= link_to "Cancel", admin_now_entries_path, class: "btn btn-secondary" %>
+  <div class="flex items-center gap-3 mt-7 pt-7 border-t border-border">
+    <%= f.submit now_entry.persisted? ? "Save changes" : "Create entry", class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-accent text-white border border-accent hover:bg-accent-hover hover:border-accent-hover cursor-pointer" %>
+    <%= link_to "Cancel", admin_now_entries_path, class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-transparent text-surface border border-border-hover hover:border-muted" %>
   </div>
 <% end %>
