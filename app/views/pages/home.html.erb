@@ -1,6 +1,6 @@
 <% content_for :title, "Krzysztof Rygielski — Developer" %>
 
-<section class="min-h-screen flex items-center border-b border-border">
+<section class="hero-bg min-h-screen flex items-center border-b border-border">
   <div class="max-w-[1100px] mx-auto px-6">
     <h1 class="text-hero font-bold tracking-[-0.035em] leading-[1.02] mb-5">Hi, I'm <span class="text-accent">Krzysztof Rygielski.</span></h1>
     <p class="text-surface/80 mb-10 max-w-[540px] leading-relaxed">Software developer building clean, reliable things for the web.</p>
@@ -14,9 +14,14 @@
 <section id="about" class="py-20 border-b border-border">
   <div class="max-w-[1100px] mx-auto px-6">
     <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">About Me</h2>
-    <div class="max-w-[680px] text-[1.0625rem] leading-[1.8] text-muted">
-      <p>I'm a software developer with a focus on backend systems and web applications. I enjoy working close to the metal — clean architecture, fast deployments, and tools that stay out of the way.</p>
-      <p class="mt-5">Currently building with Ruby on Rails, leaning on modern defaults: SQLite, Solid Queue, Kamal. I believe in shipping small, iterating fast, and keeping complexity budget under control.</p>
+    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-10">
+      <div class="flex-1 text-[1.0625rem] leading-[1.8] text-muted">
+        <p>I'm a software developer with a focus on backend systems and web applications. I enjoy working close to the metal — clean architecture, fast deployments, and tools that stay out of the way.</p>
+        <p class="mt-5">Currently building with Ruby on Rails, leaning on modern defaults: SQLite, Solid Queue, Kamal. I believe in shipping small, iterating fast, and keeping complexity budget under control.</p>
+      </div>
+      <div class="shrink-0">
+        <%= image_tag "krzysztof-rygielv2.png", alt: "Krzysztof Rygielski", class: "w-80 h-80 rounded-full object-cover border-2 border-border shadow-[0_0_24px_rgba(0,0,0,0.4)]" %>
+      </div>
     </div>
   </div>
 </section>
@@ -87,7 +92,9 @@
   <div class="max-w-[1100px] mx-auto px-6">
     <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">Now</h2>
     <% if @now_entry %>
-      <p class="max-w-[680px] text-[1.0625rem] leading-[1.8] text-muted"><%= @now_entry.content %></p>
+      <div class="post-body post-body-inline max-w-[680px]">
+        <%= markdown(@now_entry.content) %>
+      </div>
     <% else %>
       <p class="text-subtle text-[0.9375rem] py-10">Nothing here yet.</p>
     <% end %>
