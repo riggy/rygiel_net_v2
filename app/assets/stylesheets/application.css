@@ -361,33 +361,11 @@ a { color: inherit; }
 /* ============================================================
    Now
    ============================================================ */
-.now-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
-  max-width: 860px;
-}
-
-.now-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem 1.375rem;
-}
-
-.now-label {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 0.625rem;
-}
-
-.now-value {
-  font-size: 0.9rem;
+.now-paragraph {
+  max-width: 680px;
+  font-size: 1.0625rem;
+  line-height: 1.8;
   color: var(--text-muted);
-  line-height: 1.6;
 }
 
 /* ============================================================
@@ -929,9 +907,6 @@ a { color: inherit; }
     grid-template-columns: 1fr;
   }
 
-  .now-grid {
-    grid-template-columns: 1fr;
-  }
 
   .admin-table th:nth-child(3),
   .admin-table td:nth-child(3) {
