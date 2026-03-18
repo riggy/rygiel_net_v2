@@ -2,8 +2,8 @@
 
 <section class="hero-bg min-h-screen flex items-center border-b border-border">
   <div class="max-w-[1100px] mx-auto px-6">
-    <h1 class="text-hero font-bold tracking-[-0.035em] leading-[1.02] mb-5"><%= @site_config["hero_tagline"].html_safe %></h1>
-    <p class="text-surface/80 mb-10 max-w-[540px] leading-relaxed"><%= @site_config["hero_description"] %></p>
+    <h1 class="text-hero font-bold tracking-[-0.035em] leading-[1.02] mb-5"><%= @site_config.hero_tagline %></h1>
+    <p class="text-surface/80 mb-10 max-w-[540px] leading-relaxed"><%= @site_config.hero_description %></p>
     <div class="flex gap-3.5 flex-wrap">
       <%= link_to "View Work", "#projects", class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-gradient-to-r from-[#1a6af5] to-[#2ea8ff] text-white border-transparent shadow-[0_0_18px_rgba(59,130,246,0.35)] hover:shadow-[0_0_24px_rgba(59,130,246,0.5)] hover:brightness-110" %>
       <%= link_to "Get in Touch", "#contact", class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-transparent text-surface border border-border-hover hover:border-muted" %>
@@ -16,11 +16,13 @@
     <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">About Me</h2>
     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-10">
       <div class="flex-1 text-[1.0625rem] leading-[1.8] text-muted">
-        <div class="post-body post-body-inline"><%= markdown(@site_config["about_text"]) %></div>
+        <div class="post-body post-body-inline"><%= @site_config.about_text %></div>
       </div>
-      <div class="shrink-0">
-        <%= image_tag @site_config["profile_photo_path"], alt: @site_config["profile_photo_path"].to_s.split('.')[0]&.titleize, class: "w-80 h-80 rounded-full object-cover border-2 border-border shadow-[0_0_24px_rgba(0,0,0,0.4)]" %>
-      </div>
+      <% if @site_config.profile_photo_path %>
+        <div class="shrink-0">
+          <%= image_tag @site_config.profile_photo_path, alt: @site_config.profile_photo_alt, class: "w-80 h-80 rounded-full object-cover border-2 border-border shadow-[0_0_24px_rgba(0,0,0,0.4)]" %>
+        </div>
+      <% end %>
     </div>
   </div>
 </section>
@@ -29,7 +31,7 @@
   <div class="max-w-[1100px] mx-auto px-6">
     <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">Skills</h2>
     <div class="flex flex-wrap gap-2 max-w-[700px]">
-      <% @site_config["skills"].to_s.split(",").map(&:strip).each do |skill| %>
+      <% @site_config.skills.each do |skill| %>
         <span class="bg-card border border-border text-muted px-3.5 py-1.5 rounded-full text-[0.8125rem] font-medium"><%= skill %></span>
       <% end %>
     </div>
@@ -92,7 +94,7 @@
     <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">Now</h2>
     <% if @now_entry %>
       <div class="post-body post-body-inline max-w-[680px]">
-        <%= markdown(@now_entry.content) %>
+        <%= @now_entry.content %>
       </div>
     <% else %>
       <p class="text-subtle text-[0.9375rem] py-10">Nothing here yet.</p>
@@ -103,16 +105,16 @@
 <section id="contact" class="py-20">
   <div class="max-w-[1100px] mx-auto px-6">
     <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">Contact</h2>
-    <p class="text-muted mb-7 max-w-[500px] text-[1.0625rem] leading-[1.7]"><%= @site_config["contact"] %></p>
+    <p class="text-muted mb-7 max-w-[500px] text-[1.0625rem] leading-[1.7]"><%= @site_config.contact %></p>
     <div class="flex gap-5 flex-wrap">
-      <% if @site_config["contact_email"].present? %>
-        <a href="mailto:<%= @site_config["contact_email"] %>" class="text-muted text-sm font-medium no-underline hover:text-surface border-b border-transparent hover:border-border-hover transition-colors duration-150"><%= @site_config["contact_email"] %></a>
+      <% if @site_config.contact_email.present? %>
+        <a href="mailto:<%= @site_config.contact_email %>" class="text-muted text-sm font-medium no-underline hover:text-surface border-b border-transparent hover:border-border-hover transition-colors duration-150"><%= @site_config.contact_email %></a>
       <% end %>
-      <% if @site_config["contact_github"].present? %>
-        <a href="<%= @site_config["contact_github"] %>" class="text-muted text-sm font-medium no-underline hover:text-surface border-b border-transparent hover:border-border-hover transition-colors duration-150" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <% if @site_config.contact_github.present? %>
+        <a href="<%= @site_config.contact_github %>" class="text-muted text-sm font-medium no-underline hover:text-surface border-b border-transparent hover:border-border-hover transition-colors duration-150" target="_blank" rel="noopener noreferrer">GitHub</a>
       <% end %>
-      <% if @site_config["contact_linkedin"].present? %>
-        <a href="<%= @site_config["contact_linkedin"] %>" class="text-muted text-sm font-medium no-underline hover:text-surface border-b border-transparent hover:border-border-hover transition-colors duration-150" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <% if @site_config.contact_linkedin.present? %>
+        <a href="<%= @site_config.contact_linkedin %>" class="text-muted text-sm font-medium no-underline hover:text-surface border-b border-transparent hover:border-border-hover transition-colors duration-150" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       <% end %>
     </div>
   </div>
