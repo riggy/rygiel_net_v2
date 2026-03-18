@@ -17,6 +17,7 @@
       <div class="max-w-[1200px] mx-auto px-6 h-[52px] flex items-center justify-between">
         <span class="font-bold text-sm tracking-[0.05em] text-subtle uppercase">Admin</span>
         <nav class="flex gap-1">
+          <%= link_to "Site Configs", admin_site_configs_path, class: "text-muted no-underline text-[0.8125rem] font-medium px-3 py-1.5 rounded transition-all duration-150 hover:text-surface hover:bg-card-hover #{controller_name == "site_configs" ? "text-surface bg-card-hover" : ""}" %>
           <%= link_to "Posts", admin_posts_path, class: "text-muted no-underline text-[0.8125rem] font-medium px-3 py-1.5 rounded transition-all duration-150 hover:text-surface hover:bg-card-hover #{controller_name == "posts" ? "text-surface bg-card-hover" : ""}" %>
           <%= link_to "Projects", admin_projects_path, class: "text-muted no-underline text-[0.8125rem] font-medium px-3 py-1.5 rounded transition-all duration-150 hover:text-surface hover:bg-card-hover #{controller_name == "projects" ? "text-surface bg-card-hover" : ""}" %>
           <%= link_to "Now", admin_now_entries_path, class: "text-muted no-underline text-[0.8125rem] font-medium px-3 py-1.5 rounded transition-all duration-150 hover:text-surface hover:bg-card-hover #{controller_name == "now_entries" ? "text-surface bg-card-hover" : ""}" %>

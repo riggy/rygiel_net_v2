@@ -114,3 +114,18 @@ NowEntry.create!(
 )
 
 puts "Seeded: #{Post.count} posts, #{Project.count} projects, #{NowEntry.count} now entries"
+
+SiteConfig.destroy_all
+SiteConfig.create!([
+  { key: "hero_tagline", value: "Hi, I'm Krzysztof Rygielski." },
+  { key: "hero_description", value: "Software developer building clean, reliable things for the web." },
+  { key: "about_text", value: "I'm a software developer with a focus on backend systems and web applications. I enjoy working close to the metal — clean architecture, fast deployments, and tools that stay out of the way.\n\nCurrently building with Ruby on Rails, leaning on modern defaults: SQLite, Solid Queue, Kamal. I believe in shipping small, iterating fast, and keeping complexity budget under control." },
+  { key: "skills", value: "Ruby, Rails, PostgreSQL, SQLite, Docker, Linux, Git, REST APIs, Hotwire, Stimulus, Kamal, RSpec" },
+  { key: "contact", value: "Open to interesting projects and conversations. Reach out via email or find me online." },
+  { key: "contact_email", value: "hello@rygiel.net" },
+  { key: "contact_github", value: "https://github.com/" },
+  { key: "contact_linkedin", value: "https://linkedin.com/" },
+  { key: "profile_photo_path", value: "krzysztof-rygielski.png" }
+])
+
+puts "Seeded: #{SiteConfig.count} site configs"
