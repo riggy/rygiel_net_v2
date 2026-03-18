@@ -1,11 +1,5 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  working_on: MyText
-  reading: MyString
-  learning: MyString
+  content: Currently working on something interesting.
 
 two:
-  working_on: MyText
-  reading: MyString
-  learning: MyString
+  content: Reading and learning new things.

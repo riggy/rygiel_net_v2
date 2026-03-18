@@ -1,0 +1,27 @@
+<% if site_config.errors.any? %>
+  <div class="bg-red-500/8 border border-red-500/20 text-red-400 px-4 py-3 rounded text-sm mb-6">
+    <strong><%= site_config.errors.count %> <%= "error".pluralize(site_config.errors.count) %> prevented saving:</strong>
+    <ul class="mt-1.5 ml-4">
+      <% site_config.errors.full_messages.each do |msg| %>
+        <li class="mb-1"><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: [:admin, site_config], class: "max-w-[760px]" do |f| %>
+  <div class="mb-5">
+    <p class="block text-[0.8125rem] font-medium text-muted mb-2">Key</p>
+    <p class="text-surface font-mono text-sm bg-card border border-border rounded px-3.5 py-2.5"><%= site_config.key %></p>
+  </div>
+
+  <div class="mb-5">
+    <%= f.label :value, class: "block text-[0.8125rem] font-medium text-muted mb-2" %>
+    <%= f.text_area :value, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[120px] leading-relaxed", rows: 8 %>
+  </div>
+
+  <div class="flex items-center gap-3 mt-7 pt-7 border-t border-border">
+    <%= f.submit "Save changes", class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-accent text-white border border-accent hover:bg-accent-hover hover:border-accent-hover cursor-pointer" %>
+    <%= link_to "Cancel", admin_site_configs_path, class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-transparent text-surface border border-border-hover hover:border-muted" %>
+  </div>
+<% end %>

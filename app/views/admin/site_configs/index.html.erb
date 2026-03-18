@@ -1,0 +1,28 @@
+<% content_for :title, "Site Config" %>
+
+<div class="flex items-center justify-between mb-7">
+  <h1 class="text-xl font-bold tracking-[-0.02em]">Site Config</h1>
+</div>
+
+<table class="w-full border-collapse text-sm">
+  <thead>
+    <tr>
+      <th class="text-left p-3.5 text-subtle text-xs uppercase tracking-wider border-b border-border">Key</th>
+      <th class="text-left p-3.5 text-subtle text-xs uppercase tracking-wider border-b border-border">Value</th>
+      <th class="border-b border-border"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @site_configs.each do |config| %>
+      <tr>
+        <td class="p-3.5 border-b border-border text-surface font-medium font-mono text-[0.8125rem]"><%= config.key %></td>
+        <td class="p-3.5 border-b border-border text-muted max-w-[480px]"><%= truncate(config.value, length: 80) %></td>
+        <td class="p-3.5 border-b border-border">
+          <div class="flex gap-2 justify-end">
+            <%= link_to "Edit", edit_admin_site_config_path(config), class: "inline-flex items-center px-3.5 py-1.5 rounded text-[0.8125rem] font-medium transition-all duration-150 bg-transparent text-surface border border-border-hover hover:border-muted" %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

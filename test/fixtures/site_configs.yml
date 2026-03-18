@@ -1,0 +1,7 @@
+hero_tagline:
+  key: hero_tagline
+  value: "Hi, I'm Krzysztof Rygielski."
+
+hero_description:
+  key: hero_description
+  value: Software developer building clean, reliable things for the web.
