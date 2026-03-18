@@ -80,10 +80,10 @@ Post.create!([
 
 Project.create!([
   {
-    name: "rygiel.net",
+    name: "Personal Site",
     description: "Personal homepage and blog built with Rails 8. Minimal dark design, Markdown-powered blog, full admin panel. Deployed via Kamal on a single VPS.",
     tech_tags: "Ruby on Rails, SQLite, Hotwire, Kamal",
-    url: "https://rygiel.net",
+    url: "",
     featured: true
   },
   {
@@ -110,22 +110,22 @@ Project.create!([
 ])
 
 NowEntry.create!(
-  content: "Building rygiel.net v2 — a clean Rails 8 personal site with a blog and project showcase. Reading The Pragmatic Programmer. Digging into SQLite internals and WAL-mode tuning for single-server production deployments."
+  content: "Working on a personal Rails 8 site with a blog and project showcase. Reading *The Pragmatic Programmer*. Exploring SQLite internals and WAL-mode tuning for single-server production deployments."
 )
 
 puts "Seeded: #{Post.count} posts, #{Project.count} projects, #{NowEntry.count} now entries"
 
 SiteConfig.destroy_all
 SiteConfig.create!([
-  { key: "hero_tagline", value: "Hi, I'm Krzysztof Rygielski." },
+  { key: "hero_tagline", value: "Hi, I'm Jane Doe." },
   { key: "hero_description", value: "Software developer building clean, reliable things for the web." },
-  { key: "about_text", value: "I'm a software developer with a focus on backend systems and web applications. I enjoy working close to the metal — clean architecture, fast deployments, and tools that stay out of the way.\n\nCurrently building with Ruby on Rails, leaning on modern defaults: SQLite, Solid Queue, Kamal. I believe in shipping small, iterating fast, and keeping complexity budget under control." },
+  { key: "about_text", value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. I enjoy working close to the metal — clean architecture, fast deployments, and tools that stay out of the way.\n\nCurrently building with Ruby on Rails, leaning on modern defaults: SQLite, Solid Queue, Kamal. I believe in shipping small, iterating fast, and keeping complexity budget under control." },
   { key: "skills", value: "Ruby, Rails, PostgreSQL, SQLite, Docker, Linux, Git, REST APIs, Hotwire, Stimulus, Kamal, RSpec" },
   { key: "contact", value: "Open to interesting projects and conversations. Reach out via email or find me online." },
-  { key: "contact_email", value: "hello@rygiel.net" },
+  { key: "contact_email", value: "hello@example.com" },
   { key: "contact_github", value: "https://github.com/" },
   { key: "contact_linkedin", value: "https://linkedin.com/" },
-  { key: "profile_photo_path", value: "krzysztof-rygielski.png" }
+  { key: "profile_photo_path", value: "" }
 ])
 
 puts "Seeded: #{SiteConfig.count} site configs"
