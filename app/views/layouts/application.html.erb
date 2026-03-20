@@ -39,7 +39,10 @@
 
     <footer class="py-8 border-t border-border text-subtle text-[0.8125rem]">
       <div class="max-w-[1100px] mx-auto px-6">
-        <p>&copy; <%= Time.current.year %> Krzysztof Rygielski</p>
+        <div class="flex items-center justify-between gap-4">
+          <p>&copy; <%= Time.current.year %> Krzysztof Rygielski</p>
+          <p class="text-subtle text-[0.75rem] text-right">This site uses server-side access logs for basic analytics. No cookies, no third-party tracking.</p>
+        </div>
       </div>
     </footer>
   </body>
