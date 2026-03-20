@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+[ -f "$SCRIPT_DIR/../.env.deploy" ] && source "$SCRIPT_DIR/../.env.deploy"
+
 VPS_USER="${DEPLOY_USER}"
 VPS_HOST="${DEPLOY_HOST}"
 VPS_PORT="${DEPLOY_PORT}"
