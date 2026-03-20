@@ -1,5 +1,4 @@
 class PostPresenter < SimpleDelegator
-
   include MarkdownParser
 
   def initialize(post)

@@ -1,5 +1,4 @@
 class SiteConfigPresenter
-
   include MarkdownParser
 
   def initialize(site_config)
@@ -8,29 +7,29 @@ class SiteConfigPresenter
 
   def hero_tagline
     # we might have some markup here
-    @site_config['hero_tagline'].html_safe
+    @site_config["hero_tagline"].html_safe
   end
 
   def hero_description
-    @site_config['hero_description']
+    @site_config["hero_description"]
   end
 
   def about_text
-    markdown(@site_config['about_text'])
+    markdown(@site_config["about_text"])
   end
 
   def profile_photo_path
-    return if @site_config['profile_photo_path'].blank?
+    return if @site_config["profile_photo_path"].blank?
 
-    return unless File.exist?(Rails.root.join("public", "images", @site_config['profile_photo_path']).to_s)
+    return unless File.exist?(Rails.root.join("public", "images", @site_config["profile_photo_path"]).to_s)
 
-    ['/images', @site_config['profile_photo_path']].join("/")
+    [ "/images", @site_config["profile_photo_path"] ].join("/")
   end
 
   def profile_photo_alt
     return if profile_photo_path.blank?
 
-    File.basename(profile_photo_path).split('.')[0]&.titleize
+    File.basename(profile_photo_path).split(".")[0]&.titleize
   end
 
   def skills
@@ -38,18 +37,18 @@ class SiteConfigPresenter
   end
 
   def contact
-    @site_config['contact']
+    @site_config["contact"]
   end
 
   def contact_email
-    @site_config['contact_email']
+    @site_config["contact_email"]
   end
 
   def contact_linkedin
-    @site_config['contact_linkedin']
+    @site_config["contact_linkedin"]
   end
 
   def contact_github
-    @site_config['contact_github']
+    @site_config["contact_github"]
   end
 end
