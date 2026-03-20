@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-VPS_USER="${DEPLOY_USER:-rygiel}"
+VPS_USER="${DEPLOY_USER}"
 VPS_HOST="${DEPLOY_HOST}"
-VPS_PORT="${DEPLOY_PORT:-22}"
+VPS_PORT="${DEPLOY_PORT}"
 APP_DIR="${DEPLOY_PATH}"
 SERVICE_NAME="${DEPLOY_SERVICE}"
 
@@ -22,17 +22,17 @@ echo "📦 Pulling latest code..."
 git pull origin main
 
 echo "💎 Installing gems..."
-bundle config set --local without 'development test'
-bundle install
+RAILS_ENV=production bundle config set --local without 'development test'
+RAILS_ENV=production bundle install
 
 echo "🗄️ Running migrations..."
-bin/rails db:migrate RAILS_ENV=production
+RAILS_ENV=production  bin/rails db:migrate RAILS_ENV=production
 
 echo "🎨 Building Tailwind..."
-bin/rails tailwindcss:build
+RAILS_ENV=production  bin/rails tailwindcss:build
 
 echo "⚙️ Precompiling assets..."
-bin/rails assets:precompile RAILS_ENV=production
+RAILS_ENV=production bin/rails assets:precompile
 
 echo "🔄 Restarting Puma..."
 sudo -n /usr/bin/systemctl restart $SERVICE_NAME
