@@ -1,0 +1,41 @@
+#!/bin/bash
+set -e
+
+VPS_USER="${DEPLOY_USER:-rygiel}"
+VPS_HOST="${DEPLOY_HOST}"
+VPS_PORT="${DEPLOY_PORT:-22}"
+APP_DIR="${DEPLOY_PATH}"
+SERVICE_NAME="${DEPLOY_SERVICE}"
+
+if [[ -z "$VPS_HOST" || -z "$APP_DIR" || -z "$SERVICE_NAME" ]]; then
+echo "❌ Missing required env vars. Copy .env.deploy.example to .env.deploy and fill it in."
+exit 1
+fi
+
+echo "🚀 Deploying to $VPS_HOST..."
+
+ssh -p $VPS_PORT $VPS_USER@$VPS_HOST bash -s << EOF
+set -e
+cd $APP_DIR
+
+echo "📦 Pulling latest code..."
+git pull origin main
+
+echo "💎 Installing gems..."
+bundle config set --local without 'development test'
+bundle install
+
+echo "🗄️ Running migrations..."
+bin/rails db:migrate RAILS_ENV=production
+
+echo "🎨 Building Tailwind..."
+bin/rails tailwindcss:build
+
+echo "⚙️ Precompiling assets..."
+bin/rails assets:precompile RAILS_ENV=production
+
+echo "🔄 Restarting Puma..."
+sudo -n /usr/bin/systemctl restart $SERVICE_NAME
+EOF
+
+echo "✅ Deployed successfully!"
