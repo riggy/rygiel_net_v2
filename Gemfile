@@ -45,7 +45,7 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 group :development do
-  gem "dotenv-rails"
+
 end
 
 group :development, :test do
