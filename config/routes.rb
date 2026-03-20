@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :posts
     resources :projects
     resources :now_entries
-    resources :site_configs, only: [:index, :edit, :update]
+    resources :site_configs, only: [ :index, :edit, :update ]
+    resource :analytics, only: :show
   end
 end
