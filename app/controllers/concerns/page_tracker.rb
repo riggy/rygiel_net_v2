@@ -1,22 +1,25 @@
-class PageViewsController < ApplicationController
+module PageTracker
+  extend ActiveSupport::Concern
+
   BOT_REGEX = /Googlebot|Bingbot|Slurp|DuckDuckBot|Baidu|YandexBot|facebookexternalhit|Twitterbot|LinkedInBot|curl|wget|python-requests|python-urllib|Go-http-client|libwww|Java|Ruby|bot|crawl|spider/i
 
-  def create
-    user_agent = request.user_agent.to_s
-    path = params[:path].to_s
 
-    return head :no_content if BOT_REGEX.match?(user_agent)
-    return head :no_content if path.blank? || path.start_with?("/admin")
+  private
+
+  def track_page_view
+    user_agent = request.user_agent.to_s
+    return unless request.get?
+    return unless request.format.html?
+    return if request.path.start_with?("/admin")
+    return if user_agent.match?(BOT_REGEX)
 
     TrackPageViewJob.perform_later(
-      path: path,
+      path: request.path,
       ip: request.remote_ip,
       user_agent: user_agent,
       referer: request.referer,
       session_id: session.id.to_s,
-      trace_id: params[:trace_id].to_s.presence
+      trace_id: @trace_id
     )
-
-    head :no_content
   end
 end

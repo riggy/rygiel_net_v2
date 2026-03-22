@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_20_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_22_223008) do
   create_table "now_entries", force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
@@ -23,6 +23,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_20_000001) do
     t.string "path", null: false
     t.string "referer"
     t.string "session_id"
+    t.string "trace_id"
     t.string "user_agent"
     t.index ["created_at"], name: "index_page_views_on_created_at"
     t.index ["path"], name: "index_page_views_on_path"
