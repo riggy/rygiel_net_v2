@@ -91,7 +91,12 @@
 
 <section id="now" class="py-20 border-b border-border">
   <div class="max-w-[1100px] mx-auto px-6">
-    <h2 class="text-xl font-bold text-surface mb-8 tracking-tight">Now</h2>
+    <div class="flex items-baseline justify-between mb-8">
+      <h2 class="text-xl font-bold text-surface tracking-tight">Now</h2>
+      <% if @now_entry %>
+        <span class="text-subtle text-[0.8125rem]">Last updated <%= @now_entry.updated_at %></span>
+      <% end %>
+    </div>
     <% if @now_entry %>
       <div class="post-body post-body-inline max-w-[680px]">
         <%= @now_entry.content %>
