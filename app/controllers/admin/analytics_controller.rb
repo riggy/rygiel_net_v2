@@ -25,6 +25,14 @@ class Admin::AnalyticsController < Admin::BaseController
     end
   end
 
+  def flag_visitor
+    visitor = Visitor.find_by!(ip: params[:ip])
+    visitor.update!(flagged_at: Time.current, flag_reason: params[:flag_reason])
+    render json: { status: "ok", ip: visitor.ip, flagged_at: visitor.flagged_at }, status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Visitor not found" }, status: :not_found
+  end
+
   private
 
   def authenticate
