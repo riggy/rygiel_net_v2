@@ -165,4 +165,15 @@
     from { opacity: 0.55; transform: scale(1); }
     to   { opacity: 1;    transform: scale(1.1) translateX(-1.5%); }
   }
+
+  @keyframes section-glow-pulse {
+    0%   { background-color: rgba(59, 130, 246, 0); }
+    15%  { background-color: rgba(59, 130, 246, 0.07); }
+    60%  { background-color: rgba(59, 130, 246, 0.04); }
+    100% { background-color: rgba(59, 130, 246, 0); }
+  }
+
+  section:target {
+    animation: section-glow-pulse 2s ease-out forwards;
+  }
 }
