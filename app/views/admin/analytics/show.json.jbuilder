@@ -5,4 +5,4 @@ json.totals do
 end
 json.top_pages @top_pages
 json.top_referrers @top_referrers
-json.recent @recent, :path, :ip, :session_id, :referer, :created_at
+json.recent @recent, :path, :ip, :session_id, :trace_id, :referer, :created_at

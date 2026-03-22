@@ -4,4 +4,14 @@ class ApplicationController < ActionController::Base
 
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
+
+  include PageTracker
+
+  before_action :set_trace_id
+
+  private
+
+  def set_trace_id
+    @trace_id = SecureRandom.uuid
+  end
 end
