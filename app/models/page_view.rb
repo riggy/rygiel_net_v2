@@ -1,4 +1,6 @@
 class PageView < ApplicationRecord
+  belongs_to :visitor, optional: true
+
   validates :path, presence: true
 
   scope :today,      -> { where(created_at: Time.current.beginning_of_day..) }
