@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
+  post "/page_views", to: "page_views#create"
+
   root "pages#home"
 
   get "/blog", to: "blog#index", as: :blog
