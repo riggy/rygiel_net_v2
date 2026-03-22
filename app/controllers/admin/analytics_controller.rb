@@ -17,7 +17,7 @@ class Admin::AnalyticsController < Admin::BaseController
                              .limit(10)
                              .count
 
-    @recent = PageView.order(created_at: :desc).limit(20)
+    @recent = PageView.order(created_at: :desc).limit(20).includes(:visitor)
 
     respond_to do |format|
       format.html

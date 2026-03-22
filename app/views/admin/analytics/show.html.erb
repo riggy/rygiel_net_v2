@@ -84,7 +84,7 @@
       <% @recent.each do |pv| %>
         <tr>
           <td class="p-3.5 border-b border-border text-surface font-medium"><%= pv.path %></td>
-          <td class="p-3.5 border-b border-border text-muted hidden md:table-cell"><%= pv.ip %></td>
+          <td class="p-3.5 border-b border-border text-muted hidden md:table-cell"><%= pv.visitor&.ip %></td>
           <td class="p-3.5 border-b border-border text-muted hidden md:table-cell font-mono text-xs"><%= pv.session_id.presence&.first(8) || "—" %></td>
           <td class="p-3.5 border-b border-border text-muted hidden lg:table-cell font-mono text-xs"><%= pv.trace_id.presence || "—" %></td>
           <td class="p-3.5 border-b border-border text-muted hidden lg:table-cell break-all"><%= pv.referer.presence || "—" %></td>

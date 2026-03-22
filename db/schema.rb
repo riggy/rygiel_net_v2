@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_22_223008) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_23_000000) do
   create_table "now_entries", force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
@@ -19,14 +19,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_22_223008) do
 
   create_table "page_views", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "ip"
     t.string "path", null: false
     t.string "referer"
     t.string "session_id"
     t.string "trace_id"
     t.string "user_agent"
+    t.integer "visitor_id"
     t.index ["created_at"], name: "index_page_views_on_created_at"
     t.index ["path"], name: "index_page_views_on_path"
+    t.index ["visitor_id"], name: "index_page_views_on_visitor_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -54,4 +55,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_22_223008) do
     t.datetime "updated_at", null: false
     t.text "value"
   end
+
+  create_table "visitors", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "first_seen_at", null: false
+    t.string "flag_reason"
+    t.datetime "flagged_at"
+    t.string "ip"
+    t.datetime "last_seen_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "user_agent"
+    t.index ["ip"], name: "index_visitors_on_ip", unique: true
+  end
+
+  add_foreign_key "page_views", "visitors"
 end
