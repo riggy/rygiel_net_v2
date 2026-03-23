@@ -1,4 +1,5 @@
 class Admin::AnalyticsController < Admin::BaseController
+  skip_before_action :verify_authenticity_token, only: [ :flag_visitor ]
   def show
     @total_today  = PageView.today.count
     @total_week   = PageView.this_week.count
