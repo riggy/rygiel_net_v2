@@ -48,3 +48,9 @@ end
 Rack::Attack.throttle("requests by ip", limit: 100, period: 1.minute) do |request|
   request.ip
 end
+
+Rack::Attack.blocklist("flagged visitors") do |req|
+  Rails.cache.fetch("flagged_ips", expires_in: 5.minutes) do
+    Visitor.where.not(flagged_at: nil).pluck(:ip)
+  end.include?(req.ip)
+end
