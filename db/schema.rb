@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_23_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_24_164952) do
   create_table "now_entries", force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
@@ -61,6 +61,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_23_000000) do
     t.datetime "first_seen_at", null: false
     t.string "flag_reason"
     t.datetime "flagged_at"
+    t.string "flagged_by"
     t.string "ip"
     t.datetime "last_seen_at", null: false
     t.datetime "updated_at", null: false
