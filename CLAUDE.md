@@ -19,6 +19,18 @@ bin/brakeman       # Security scan
 bin/ci             # Full CI pipeline (lint + security + tests)
 ```
 
+## Architecture
+
+**Frontend:** Stimulus controllers live in `app/javascript/controllers/`. Turbo handles navigation — avoid writing custom fetch/XHR where Turbo frames/streams can be used instead.
+
+**Backend:** Fat routes + thin models pattern expected. Controllers inherit from `ApplicationController` which enforces modern browser requirements (WebP, CSS nesting, Web Push support).
+
+**Database:** Multi-database setup in production — primary (`production.sqlite3`), cache (`production_cache.sqlite3`), queue (`production_queue.sqlite3`). Migrations go to the primary DB by default.
+
+**Jobs:** Solid Queue runs inside Puma in production (single-server model). No separate worker process needed for deployment.
+
+**Assets:** Propshaft (not Sprockets) + Importmap (no Node/webpack). Add JS packages via `bin/importmap pin <package>`.
+
 ## Stack
 
 - **Rails 8**, SQLite, Hotwire (Turbo + Stimulus), Importmap, Tailwind v4
