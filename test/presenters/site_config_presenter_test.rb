@@ -34,12 +34,12 @@ class SiteConfigPresenterTest < ActiveSupport::TestCase
   end
 
   test "skills splits comma-separated string" do
-    assert_equal ["Ruby", "Rails", "SQLite"], build.skills
+    assert_equal [ "Ruby", "Rails", "SQLite" ], build.skills
   end
 
   test "skills strips whitespace" do
     presenter = build("skills" => " Ruby ,  Rails , SQLite ")
-    assert_equal ["Ruby", "Rails", "SQLite"], presenter.skills
+    assert_equal [ "Ruby", "Rails", "SQLite" ], presenter.skills
   end
 
   test "skills returns empty array when blank" do
