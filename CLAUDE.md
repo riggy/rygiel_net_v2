@@ -1,4 +1,10 @@
-# CLAUDE.md — Project Context for AI Assistants
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project
+
+Rails 8.1 personal blog/portfolio site. Three core models: `Post` (blog articles), `Project` (portfolio items), `NowEntry` ("Now" page content). Server-rendered ERB with Hotwire (Turbo + Stimulus). SQLite + Solid Suite (Cache, Queue, Cable) — no Redis or external job queue.
 
 ## Commands
 
