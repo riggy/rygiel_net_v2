@@ -83,6 +83,22 @@ Business logic and rendering live in presenters (`app/presenters/`), not in mode
 - `PageView` — belongs to `Visitor`, has `trace_id` for correlating server + JS hits
 - Rack::Attack is configured in `config/initializers/rack_attack.rb` — it reads flagged IPs from the DB via cache. When adding new throttle rules, follow the existing pattern.
 
+## Git Workflow
+
+**Never commit directly to `main`.** All work goes through feature branches and pull requests.
+
+- Branch naming: `feature/<short-description>` (e.g. `feature/markdown-editor-emoji`)
+- Create a branch before making any changes
+- Each logical change gets its own commit with a clear message
+- Open a PR against `main` when the work is ready for review
+
+```bash
+git checkout -b feature/your-feature-name
+# make changes, commit
+git push origin feature/your-feature-name
+# open PR via GitHub UI or CLI
+```
+
 ## Deployment
 
 ```bash
