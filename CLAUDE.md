@@ -90,8 +90,6 @@ cp .env.deploy.example .env.deploy  # fill in your values
 bin/deploy                           # git pull → bundle → migrate → tailwind → assets → restart puma
 ```
 
-Puma is managed by systemd (`puma_rygiel_net.service`). Restart is done via `sudo -n /usr/bin/systemctl restart puma_rygiel_net` — the deploy user has a scoped sudoers rule for this only.
-
 ## CI Checks
 
 | Check | Tool | What it catches |
