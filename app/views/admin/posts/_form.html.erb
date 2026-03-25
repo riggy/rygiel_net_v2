@@ -15,11 +15,11 @@
     <%= f.text_field :title, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none", autofocus: true, placeholder: "Post title" %>
   </div>
 
-  <div class="mb-5">
+  <div class="mb-5" data-controller="markdown-editor">
     <%= f.label :body, class: "block text-[0.8125rem] font-medium text-muted mb-2" do %>
       Body <span class="text-subtle font-normal ml-1">(Markdown)</span>
     <% end %>
-    <%= f.text_area :body, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[220px] leading-relaxed font-mono text-[0.8125rem]", rows: 20, placeholder: "Write in Markdown..." %>
+    <%= f.text_area :body, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[220px] leading-relaxed font-mono text-[0.8125rem]", rows: 20, placeholder: "Write in Markdown...", data: { markdown_editor_target: "input" } %>
   </div>
 
   <div class="mb-5">
