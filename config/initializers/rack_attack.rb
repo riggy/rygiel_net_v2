@@ -54,3 +54,8 @@ Rack::Attack.blocklist("flagged visitors") do |req|
     Visitor.where.not(flagged_at: nil).pluck(:ip)
   end.include?(req.ip)
 end
+
+# Chatbot rate limiting — max 10 messages per IP per minute
+Rack::Attack.throttle("chat/ip", limit: 10, period: 1.minute) do |req|
+  req.ip if req.path =~ /\A\/conversations\/\d+\/messages\z/ && req.post?
+end
