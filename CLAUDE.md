@@ -1,5 +1,18 @@
 # CLAUDE.md — Project Context for AI Assistants
 
+## Commands
+
+```bash
+bin/setup          # Install dependencies & prepare database
+bin/dev            # Start development server
+bin/rails test     # Run all unit/integration tests
+bin/rails test:system  # Run browser tests (requires Chrome)
+bin/rails test test/models/post_test.rb  # Run a single test file
+bin/rubocop        # Lint Ruby code
+bin/brakeman       # Security scan
+bin/ci             # Full CI pipeline (lint + security + tests)
+```
+
 ## Stack
 
 - **Rails 8**, SQLite, Hotwire (Turbo + Stimulus), Importmap, Tailwind v4
