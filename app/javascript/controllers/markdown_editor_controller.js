@@ -21,7 +21,7 @@ export default class extends Controller {
 
       const values = Object.entries(emojis).map(([ key, value ]) => ({
         key,
-        value: `:${key}:`,
+        value: `${key}:`,
         display: `${value} ${key}`
       }))
 
