@@ -39,6 +39,17 @@ bin/ci             # Full CI pipeline (lint + security + tests)
   - JS lives in `app/javascript/controllers/` (Stimulus) or pinned CDN packages
 - **No Docker, no Kamal** — plain bash deploy via `bin/deploy`
 
+## JavaScript — General Rules
+
+**Always use the `.esm.js` build when pinning CDN packages via importmap.** Importmap injects `<script type="module">` tags, so UMD/CJS bundles (`.min.js`, `.umd.js`) won't work — they don't expose ES module exports and will throw a `SyntaxError` at runtime. Check the package's `dist/` folder on jsDelivr and pick the `.esm.js` variant.
+
+## Stimulus Controllers
+
+| Controller | File | Purpose |
+|---|---|---|
+| `markdown-editor` | `markdown_editor_controller.js` | Admin Markdown editor with `:emoji:` autocomplete via **TributeJS**. Fetches emoji list from `/admin/emojis.json` at connect time. Only attached in admin views. |
+| `page-tracker` | `page_tracker_controller.js` | Client-side analytics. Fires a `POST /page_views` on every `turbo:load` and `hashchange` event (deduped). Reads `csrf-token` and `trace-id` from `<meta>` tags. Attached on the `<body>` for all public pages. |
+
 ## Markdown & Emoji
 
 All Markdown rendering goes through the `MarkdownParser` concern (`app/presenters/concerns/markdown_parser.rb`). **Do not roll your own renderer.**
