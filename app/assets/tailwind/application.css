@@ -161,6 +161,45 @@
     z-index: 1;
   }
 
+  /* Tribute.js emoji autocomplete dropdown */
+  .tribute-container {
+    position: absolute;
+    z-index: 100;
+    background: #0d1829;
+    border: 1px solid #1c2d4a;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    max-height: 220px;
+    overflow-y: auto;
+    min-width: 200px;
+  }
+
+  .tribute-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+  }
+
+  .tribute-container li {
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    color: #e0e0e0;
+    white-space: nowrap;
+  }
+
+  .tribute-container li.highlight,
+  .tribute-container li:hover {
+    background: #12203a;
+    color: #f0f0f0;
+  }
+
+  .tribute-emoji {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   @keyframes hero-glow {
     from { opacity: 0.55; transform: scale(1); }
     to   { opacity: 1;    transform: scale(1.1) translateX(-1.5%); }

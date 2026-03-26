@@ -17,7 +17,7 @@
 
   <div class="mb-5">
     <%= f.label :description, class: "block text-[0.8125rem] font-medium text-muted mb-2" %>
-    <%= f.text_area :description, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[100px] leading-relaxed", rows: 4, placeholder: "Short description of the project" %>
+    <%= f.text_area :description, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[100px] leading-relaxed", rows: 4, placeholder: "Short description of the project", data: { controller: "markdown-editor", markdown_editor_target: "input" } %>
   </div>
 
   <div class="mb-5">
