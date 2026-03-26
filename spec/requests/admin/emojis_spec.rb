@@ -1,7 +1,12 @@
 require "rails_helper"
 
 RSpec.describe "Admin::Emojis", type: :request do
-  let(:credentials) { ActionController::HttpAuthentication::Basic.encode_credentials("admin", "admin") }
+  let(:credentials) { ActionController::HttpAuthentication::Basic.encode_credentials("admin", "secret") }
+
+  before do
+    allow(Rails.application.credentials).to receive(:dig).with(:admin, :username).and_return("admin")
+    allow(Rails.application.credentials).to receive(:dig).with(:admin, :password).and_return("secret")
+  end
 
   it "returns JSON object mapping emoji names to unicode characters" do
     get "/admin/emojis.json", headers: { "Authorization" => credentials }
