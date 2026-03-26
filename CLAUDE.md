@@ -94,6 +94,19 @@ Business logic and rendering live in presenters (`app/presenters/`), not in mode
 - `PageView` — belongs to `Visitor`, has `trace_id` for correlating server + JS hits
 - Rack::Attack is configured in `config/initializers/rack_attack.rb` — it reads flagged IPs from the DB via cache. When adding new throttle rules, follow the existing pattern.
 
+## Pre-PR Checklist
+
+Before pushing a branch or opening a PR, run the full local CI suite:
+
+```bash
+bin/brakeman --no-pager     # catch security warnings
+bin/bundler-audit           # check for vulnerable gems
+bin/rubocop                 # catch style issues
+bundle exec rspec           # run all specs
+```
+
+Fix any failures before pushing. Don't rely on GitHub Actions to catch these.
+
 ## Git Workflow
 
 **Never commit directly to `main`.** All work goes through feature branches and pull requests.
