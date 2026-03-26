@@ -10,9 +10,9 @@
 <% end %>
 
 <%= form_with model: [:admin, now_entry], class: "max-w-[760px]" do |f| %>
-  <div class="mb-5">
+  <div class="mb-5" data-controller="markdown-editor">
     <%= f.label :content, "Now", class: "block text-[0.8125rem] font-medium text-muted mb-2" %>
-    <%= f.text_area :content, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[100px] leading-relaxed", rows: 6, autofocus: true, placeholder: "What are you up to? Supports Markdown." %>
+    <%= f.text_area :content, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[100px] leading-relaxed", rows: 6, autofocus: true, placeholder: "What are you up to? Supports Markdown.", data: { markdown_editor_target: "input" } %>
   </div>
 
   <div class="flex items-center gap-3 mt-7 pt-7 border-t border-border">

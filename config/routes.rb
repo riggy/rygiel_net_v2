@@ -17,5 +17,6 @@ Rails.application.routes.draw do
     resource :analytics, only: :show do
       post :flag_visitor
     end
+    get :emojis, to: "emojis#index"
   end
 end
