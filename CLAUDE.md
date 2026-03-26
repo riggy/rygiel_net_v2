@@ -130,3 +130,7 @@ bin/deploy                           # git pull → bundle → migrate → tailw
 **Common RuboCop pitfalls:** spaces inside array literals (`[ "a", "b" ]` not `["a", "b"]`), final newlines in files.
 
 **Brakeman:** avoid `raw`, `html_safe` without explicit sanitization. Use `sanitize()` helper or let `MarkdownParser` handle it.
+
+## General Rules
+
+Do not create scratch, notes, or planning files in the project directory. Think silently or use comments in code. Delete any temporary files you create.
