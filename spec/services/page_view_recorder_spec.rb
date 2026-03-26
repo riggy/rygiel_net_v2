@@ -1,6 +1,6 @@
-require "test_helper"
+require "rails_helper"
 
-class PageViewRecorderTest < ActiveJob::TestCase
+RSpec.describe PageViewRecorder do
   DEFAULT_PARAMS = {
     path:       "/blog",
     ip:         "1.2.3.4",
@@ -14,46 +14,46 @@ class PageViewRecorderTest < ActiveJob::TestCase
     PageViewRecorder.call(**DEFAULT_PARAMS.merge(overrides))
   end
 
-  test "enqueues TrackPageViewJob with correct args for valid page view" do
-    assert_enqueued_with(job: TrackPageViewJob, args: [ {
+  it "enqueues TrackPageViewJob with correct args for valid page view" do
+    expect {
+      call
+    }.to have_enqueued_job(TrackPageViewJob).with({
       path:       "/blog",
       ip:         "1.2.3.4",
       user_agent: "Mozilla/5.0",
       referer:    "https://example.com",
       session_id: "abc123",
       trace_id:   "trace-xyz"
-    } ]) do
-      call
-    end
+    })
   end
 
-  test "does not enqueue job for Googlebot" do
-    assert_no_enqueued_jobs do
+  it "does not enqueue job for Googlebot" do
+    expect {
       call(user_agent: "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)")
-    end
+    }.not_to have_enqueued_job
   end
 
-  test "does not enqueue job for curl" do
-    assert_no_enqueued_jobs do
+  it "does not enqueue job for curl" do
+    expect {
       call(user_agent: "curl/7.88.1")
-    end
+    }.not_to have_enqueued_job
   end
 
-  test "does not enqueue job for admin path" do
-    assert_no_enqueued_jobs do
+  it "does not enqueue job for admin path" do
+    expect {
       call(path: "/admin/posts")
-    end
+    }.not_to have_enqueued_job
   end
 
-  test "does not enqueue job for blank path" do
-    assert_no_enqueued_jobs do
+  it "does not enqueue job for blank path" do
+    expect {
       call(path: "")
-    end
+    }.not_to have_enqueued_job
   end
 
-  test "does not enqueue job for nil path" do
-    assert_no_enqueued_jobs do
+  it "does not enqueue job for nil path" do
+    expect {
       call(path: nil)
-    end
+    }.not_to have_enqueued_job
   end
 end

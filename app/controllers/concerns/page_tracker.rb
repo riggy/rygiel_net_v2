@@ -4,7 +4,7 @@ module PageTracker
   private
 
   def track_page_view
-    return unless request.get?
+    return unless request.get? || request.head?
     return unless request.format.html?
 
     PageViewRecorder.call(
