@@ -11,9 +11,9 @@ Rails 8.1 personal blog/portfolio site. Three core models: `Post` (blog articles
 ```bash
 bin/setup          # Install dependencies & prepare database
 bin/dev            # Start development server
-bin/rails test     # Run all unit/integration tests
+bundle exec rspec          # Run all specs
+bundle exec rspec spec/models/site_config_spec.rb  # Run a single spec file
 bin/rails test:system  # Run browser tests (requires Chrome)
-bin/rails test test/models/post_test.rb  # Run a single test file
 bin/rubocop        # Lint Ruby code
 bin/brakeman       # Security scan
 bin/ci             # Full CI pipeline (lint + security + tests)
@@ -124,8 +124,8 @@ bin/deploy                           # git pull → bundle → migrate → tailw
 | `lint` | RuboCop | Style violations — spaces inside array brackets, trailing newlines, etc. |
 | `scan_ruby` | Brakeman | Rails security issues — XSS, SQL injection, unsafe `raw`/`html_safe`, mass assignment |
 | `scan_js` | importmap audit | JS dependency vulnerabilities |
-| `test` | Minitest | Unit + integration tests |
-| `system-test` | Minitest + Capybara | Browser-level tests |
+| `test` | RSpec | Unit + integration tests |
+| `system-test` | RSpec + Capybara | Browser-level tests |
 
 **Common RuboCop pitfalls:** spaces inside array literals (`[ "a", "b" ]` not `["a", "b"]`), final newlines in files.
 
