@@ -4,146 +4,73 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Rails 8.1 personal blog/portfolio site. Three core models: `Post` (blog articles), `Project` (portfolio items), `NowEntry` ("Now" page content). Server-rendered ERB with Hotwire (Turbo + Stimulus). SQLite + Solid Suite (Cache, Queue, Cable) — no Redis or external job queue.
+Rails 8.1 personal blog/portfolio site. Three core models: `Post` (blog articles), `Project` (portfolio items), `NowEntry` ("Now" page content). Server-rendered ERB with Hotwire (Turbo + Stimulus). SQLite + Solid Suite (Cache, Queue, Cable) — no Redis, no Docker, no Kamal.
 
 ## Commands
 
 ```bash
-bin/setup          # Install dependencies & prepare database
-bin/dev            # Start development server
-bundle exec rspec          # Run all specs
-bundle exec rspec spec/models/site_config_spec.rb  # Run a single spec file
-bin/rails test:system  # Run browser tests (requires Chrome)
-bin/rubocop        # Lint Ruby code
-bin/brakeman       # Security scan
-bin/ci             # Full CI pipeline (lint + security + tests)
+bin/setup               # Install dependencies & prepare database
+bin/dev                 # Start development server
+bundle exec rspec       # Run all specs
+bundle exec rspec <file> # Run a single spec file
+bin/rubocop             # Lint Ruby code
+bin/brakeman --no-pager # Security scan
+bin/ci                  # Full CI pipeline (lint + security + tests)
+bin/deploy              # Deploy: git pull → bundle → migrate → assets → restart puma
 ```
-
-## Architecture
-
-**Frontend:** Stimulus controllers live in `app/javascript/controllers/`. Turbo handles navigation — avoid writing custom fetch/XHR where Turbo frames/streams can be used instead.
-
-**Backend:** Fat routes + thin models pattern expected. Controllers inherit from `ApplicationController` which enforces modern browser requirements (WebP, CSS nesting, Web Push support).
-
-**Database:** Multi-database setup in production — primary (`production.sqlite3`), cache (`production_cache.sqlite3`), queue (`production_queue.sqlite3`). Migrations go to the primary DB by default.
-
-**Jobs:** Solid Queue runs inside Puma in production (single-server model). No separate worker process needed for deployment.
-
-**Assets:** Propshaft (not Sprockets) + Importmap (no Node/webpack). Add JS packages via `bin/importmap pin <package>`.
-
-## Stack
-
-- **Rails 8**, SQLite, Hotwire (Turbo + Stimulus), Importmap, Tailwind v4
-- **No npm, no webpack** — use importmap exclusively for JS dependencies
-  - Pin packages via `./bin/importmap pin <package>`
-  - JS lives in `app/javascript/controllers/` (Stimulus) or pinned CDN packages
-- **No Docker, no Kamal** — plain bash deploy via `bin/deploy`
-
-## JavaScript — General Rules
-
-**Always use the `.esm.js` build when pinning CDN packages via importmap.** Importmap injects `<script type="module">` tags, so UMD/CJS bundles (`.min.js`, `.umd.js`) won't work — they don't expose ES module exports and will throw a `SyntaxError` at runtime. Check the package's `dist/` folder on jsDelivr and pick the `.esm.js` variant.
-
-## Stimulus Controllers
-
-| Controller | File | Purpose |
-|---|---|---|
-| `markdown-editor` | `markdown_editor_controller.js` | Admin Markdown editor with `:emoji:` autocomplete via **TributeJS**. Fetches emoji list from `/admin/emojis.json` at connect time. Only attached in admin views. |
-| `page-tracker` | `page_tracker_controller.js` | Client-side analytics. Fires a `POST /page_views` on every `turbo:load` and `hashchange` event (deduped). Reads `csrf-token` and `trace-id` from `<meta>` tags. Attached on the `<body>` for all public pages. |
-
-## Markdown & Emoji
-
-All Markdown rendering goes through the `MarkdownParser` concern (`app/presenters/concerns/markdown_parser.rb`). **Do not roll your own renderer.**
-
-- Uses **Redcarpet** for Markdown parsing (autolink, tables, fenced code, strikethrough, superscript)
-- Uses **gemoji** to convert `:emoji_name:` → unicode before rendering
-- Applied via the presenter pattern — see `PostPresenter`, `NowEntryPresenter`
-
-If you need Markdown rendered somewhere new, include `MarkdownParser` in the relevant presenter.
-
-## Design Tokens (Tailwind v4)
-
-All colours are defined in `app/assets/tailwind/application.css` under `@theme`. Always use these tokens — do not hardcode hex values or invent new classes.
-
-| Token | Usage |
-|---|---|
-| `bg-bg` | Page background (`#07101f`) |
-| `bg-card` | Card / panel background (`#0d1829`) |
-| `bg-card-hover` | Card hover state (`#12203a`) |
-| `text-surface` | Primary text (`#f0f0f0`) |
-| `text-muted` | Secondary text (`#e0e0e0`) |
-| `text-subtle` | Tertiary / placeholder text (`#666666`) |
-| `text-accent` / `bg-accent` | Electric blue (`#3b82f6`) |
-| `text-accent-hover` / `bg-accent-hover` | Accent hover (`#2563eb`) |
-| `border-border` | Default border (`#1c2d4a`) |
-| `border-border-hover` | Hover border (`#2a4068`) |
-| `text-label` | Label/tag text (`#60a5fa`) |
-
-Post body content uses the `.post-body` component class (defined in the same CSS file) — use it for any rendered Markdown output shown to visitors.
-
-## Authentication
-
-Admin area uses **HTTP Basic Auth** — no Devise, no sessions gem. Do not add authentication gems. The existing `authenticate_admin!` before action in `Admin::BaseController` handles it.
-
-## Presenter Pattern
-
-Business logic and rendering live in presenters (`app/presenters/`), not in models or views directly. Each model has a corresponding presenter. Concerns live in `app/presenters/concerns/`.
-
-## Analytics & Visitor Tracking
-
-- `Visitor` — one record per IP, tracks `first_seen_at`, `last_seen_at`, `flagged_at`, `flag_reason`, `flagged_by`
-- `PageView` — belongs to `Visitor`, has `trace_id` for correlating server + JS hits
-- Rack::Attack is configured in `config/initializers/rack_attack.rb` — it reads flagged IPs from the DB via cache. When adding new throttle rules, follow the existing pattern.
 
 ## Pre-PR Checklist
 
-Before pushing a branch or opening a PR, run the full local CI suite:
+Run before every push: `bin/brakeman --no-pager && bin/bundler-audit && bin/rubocop && bundle exec rspec`
 
-```bash
-bin/brakeman --no-pager     # catch security warnings
-bin/bundler-audit           # check for vulnerable gems
-bin/rubocop                 # catch style issues
-bundle exec rspec           # run all specs
-```
+Don't rely on GitHub Actions to catch these.
 
-Fix any failures before pushing. Don't rely on GitHub Actions to catch these.
+## Architecture
+
+**No npm, no webpack** — Importmap exclusively for JS. Pin packages via `bin/importmap pin <package>`, always use the `.esm.js` CDN build (UMD/CJS bundles throw `SyntaxError` with importmap). Propshaft, not Sprockets.
+
+**Frontend:** Stimulus controllers in `app/javascript/controllers/`. Turbo handles navigation — avoid custom fetch/XHR where Turbo frames/streams work.
+
+**Stimulus controllers:**
+- `markdown-editor` — admin Markdown editor with `:emoji:` autocomplete via TributeJS; fetches `/admin/emojis.json` at connect time
+- `page-tracker` — fires `POST /page_views` on every `turbo:load` / `hashchange` (deduped); reads `csrf-token` and `trace-id` from `<meta>` tags
+
+**Backend:** Presenters (`app/presenters/`) handle rendering — not models or views directly. Each model has a presenter; concerns in `app/presenters/concerns/`.
+
+**Jobs:** Solid Queue runs inside Puma — no separate worker process.
+
+## Markdown & Emoji
+
+All rendering goes through `MarkdownParser` (`app/presenters/concerns/markdown_parser.rb`). Do not roll your own renderer. Uses Redcarpet + gemoji. Include `MarkdownParser` in any presenter that needs it.
+
+## Design Tokens (Tailwind v4)
+
+Defined in `app/assets/tailwind/application.css` under `@theme`. Always use tokens — never hardcode hex values.
+
+Key tokens: `bg-bg`, `bg-card`, `bg-card-hover`, `text-surface`, `text-muted`, `text-subtle`, `text-accent`, `text-accent-hover`, `border-border`, `border-border-hover`, `text-label`. See the CSS file for values.
+
+Use `.post-body` for any rendered Markdown shown to visitors.
+
+## Authentication
+
+Admin: HTTP Basic Auth only — no Devise, no sessions gem. `authenticate_admin!` in `Admin::BaseController`. In request specs, stub `Rails.application.credentials.dig(:admin, :username/password)` — no master key in CI.
+
+## Analytics & Visitor Tracking
+
+- `Visitor` — one record per IP (`first_seen_at`, `last_seen_at`, `flagged_at`, `flag_reason`)
+- `PageView` — belongs to `Visitor`, has `trace_id`
+- Rack::Attack reads flagged IPs from DB via cache — follow existing pattern in `config/initializers/rack_attack.rb`
 
 ## Git Workflow
 
-**Never commit directly to `main`.** All work goes through feature branches and pull requests.
+**Never commit to `main` directly.** Branch → PR → review → merge.
 
-- Branch naming: `feature/<short-description>` (e.g. `feature/markdown-editor-emoji`)
-- Create a branch before making any changes
-- Each logical change gets its own commit with a clear message
-- Open a PR against `main` when the work is ready for review
+- Branch naming: `feature/<short-description>`
+- Use `gh pr create` to open PRs
 
-```bash
-git checkout -b feature/your-feature-name
-# make changes, commit
-git push origin feature/your-feature-name
-# open PR via GitHub UI or CLI
-```
-
-## Deployment
-
-```bash
-cp .env.deploy.example .env.deploy  # fill in your values
-bin/deploy                           # git pull → bundle → migrate → tailwind → assets → restart puma
-```
-
-## CI Checks
-
-| Check | Tool | What it catches |
-|---|---|---|
-| `lint` | RuboCop | Style violations — spaces inside array brackets, trailing newlines, etc. |
-| `scan_ruby` | Brakeman | Rails security issues — XSS, SQL injection, unsafe `raw`/`html_safe`, mass assignment |
-| `scan_js` | importmap audit | JS dependency vulnerabilities |
-| `test` | RSpec | Unit + integration tests |
-| `system-test` | RSpec + Capybara | Browser-level tests |
-
-**Common RuboCop pitfalls:** spaces inside array literals (`[ "a", "b" ]` not `["a", "b"]`), final newlines in files.
-
-**Brakeman:** avoid `raw`, `html_safe` without explicit sanitization. Use `sanitize()` helper or let `MarkdownParser` handle it.
+**RuboCop pitfalls:** spaces inside array literals (`[ "a", "b" ]`), final newlines in files.
+**Brakeman:** avoid `raw`/`html_safe` without sanitization; use `sanitize()` or `MarkdownParser`.
 
 ## General Rules
 
-Do not create scratch, notes, or planning files in the project directory. Think silently or use comments in code. Delete any temporary files you create.
+Do not create scratch or planning files in the project directory. Think silently or use code comments. Delete any temporary files you create.
