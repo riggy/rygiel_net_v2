@@ -4,15 +4,14 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
   HARD_FLAG_THRESHOLD  = 50
   HIGH_VOLUME_MIN      = 20
   MEDIUM_VOLUME_MIN    = 10
-  FLAG_SCORE_THRESHOLD = 5
+  FLAG_SCORE_THRESHOLD = 6
+  MIN_VIEWS            = 3
 
   WEIGHTS = {
     high_volume:   4,
     medium_volume: 2,
     no_session:    3,
-    no_referer:    2,
-    root_only:     3,
-    single_path:   2
+    no_referer:    2
   }.freeze
 
   def perform
@@ -50,6 +49,10 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
       return
     end
 
+    # Don't flag casual visitors with very few views — on a single-page site,
+    # legitimate users naturally hit only "/" once or twice.
+    return if count < MIN_VIEWS
+
     score   = 0
     reasons = []
 
@@ -66,21 +69,9 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
       reasons << "#{pct(views, :session_id)}% of views had no session"
     end
 
-    if blank_ratio(views, :referer) > 0.8
+    if blank_ratio(views, :referer) > 0.0
       score += WEIGHTS[:no_referer]
       reasons << "#{pct(views, :referer)}% of views had no referer"
-    end
-
-    paths      = views.map(&:path)
-    root_ratio = paths.count { |p| p == "/" }.to_f / count
-    if root_ratio > 0.8
-      score += WEIGHTS[:root_only]
-      reasons << "#{(root_ratio * 100).round}% of views were to /"
-    end
-
-    if paths.uniq.size == 1
-      score += WEIGHTS[:single_path]
-      reasons << "only 1 distinct path (#{paths.first})"
     end
 
     return if score < FLAG_SCORE_THRESHOLD
