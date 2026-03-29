@@ -34,7 +34,10 @@ Rack::Attack.blocklist("block known scanners") do |request|
     "python-requests",
     "go-http-client",
     "curl/",
-    "wget/"
+    "wget/",
+    # Other
+    "fasthttp",
+    "palo alto"
   ]
 
   user_agent = request.user_agent.to_s.downcase
