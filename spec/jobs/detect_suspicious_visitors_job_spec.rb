@@ -60,23 +60,23 @@ RSpec.describe DetectSuspiciousVisitorsJob, type: :job do
     expect(v.reload.flagged_at).not_to be_nil
   end
 
-  it "flags visitor with no session + no referer, 3 views (score 5)" do
+  it "flags visitor with 10 views + no session + no referer (score 7)" do
     v = make_visitor
-    make_views(v, count: 3, session_id: nil, referer: nil)
+    make_views(v, count: 10, session_id: nil, referer: nil)
     run_job
     expect(v.reload.flagged_at).not_to be_nil
   end
 
-  it "flags visitor with 4 views all to root + no session (score 6)" do
+  it "flags visitor with 20 views all to root + no session (score 7)" do
     v = make_visitor
-    make_views(v, count: 4, path: "/", session_id: nil)
+    make_views(v, count: 20, path: "/", session_id: nil)
     run_job
     expect(v.reload.flagged_at).not_to be_nil
   end
 
-  it "flags visitor with single non-root path + no session (score 5)" do
+  it "flags visitor with 20 views to single non-root path + no session (score 7)" do
     v = make_visitor
-    make_views(v, count: 3, path: "/about", session_id: nil)
+    make_views(v, count: 20, path: "/about", session_id: nil)
     run_job
     expect(v.reload.flagged_at).not_to be_nil
   end
@@ -146,7 +146,7 @@ RSpec.describe DetectSuspiciousVisitorsJob, type: :job do
 
   it "flag_reason describes triggered signals" do
     v = make_visitor
-    make_views(v, count: 3, path: "/", session_id: nil, referer: nil)
+    make_views(v, count: 10, path: "/", session_id: nil, referer: nil)
     run_job
     v.reload
     expect(v.flagged_at).not_to be_nil
