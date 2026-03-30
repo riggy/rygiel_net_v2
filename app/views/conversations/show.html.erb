@@ -1,4 +1,9 @@
-<%= turbo_frame_tag "chat_panel" do %>
+<%= turbo_frame_tag "chat_panel",
+    data: {
+      conversation_id: @conversation.id,
+      messages_dom_id: dom_id(@conversation, :messages),
+      thinking_dom_id: dom_id(@conversation, :thinking)
+    } do %>
   <div class="chat-messages" id="<%= dom_id(@conversation, :messages) %>">
     <%= render @messages %>
   </div>
