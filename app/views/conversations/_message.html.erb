@@ -1,0 +1,10 @@
+<div class="chat-message chat-message--<%= message.role %>">
+  <div class="chat-message__bubble">
+    <% if message.role == "assistant" %>
+      <%= simple_format(message.content) %>
+    <% else %>
+      <%= h(message.content) %>
+    <% end %>
+  </div>
+  <span class="chat-message__time"><%= message.created_at.strftime("%-I:%M %p") %></span>
+</div>

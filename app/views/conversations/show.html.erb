@@ -1,0 +1,11 @@
+<%= turbo_frame_tag "chat_panel" do %>
+  <div class="chat-messages" id="<%= dom_id(@conversation, :messages) %>">
+    <%= render @messages %>
+  </div>
+
+  <div id="<%= dom_id(@conversation, :thinking) %>"></div>
+
+  <%= render "conversations/message_form",
+      conversation: @conversation,
+      message:      Message.new %>
+<% end %>

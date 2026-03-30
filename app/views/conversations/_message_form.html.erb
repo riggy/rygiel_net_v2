@@ -1,0 +1,17 @@
+<div id="<%= dom_id(conversation, :message_form) %>">
+  <%= form_with model: [ conversation, message ],
+      url:   conversation_messages_path(conversation),
+      data:  { controller: "chat-form" } do |f| %>
+    <% if message.errors.any? %>
+      <p class="text-red-400 text-xs mb-2"><%= message.errors.full_messages.first %></p>
+    <% end %>
+    <div class="chat-form">
+      <%= f.text_area :content,
+          rows:        2,
+          placeholder: "Ask me anything...",
+          class:       "chat-form__input",
+          data:        { "chat-form-target": "input", action: "keydown->chat-form#submitOnEnter" } %>
+      <%= f.submit "Send", class: "chat-form__submit" %>
+    </div>
+  <% end %>
+</div>
