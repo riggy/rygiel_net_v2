@@ -17,24 +17,18 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
   def perform
     recent_cutoff = 24.hours.ago
 
-    visitor_ids = PageView
-      .where(created_at: recent_cutoff..)
-      .where.not(visitor_id: nil)
-      .distinct
-      .pluck(:visitor_id)
-
-    return if visitor_ids.empty?
-
-    visitors = Visitor.unflagged.where(id: visitor_ids).index_by(&:id)
-    return if visitors.empty?
-
     views_by_visitor = PageView
-      .where(visitor_id: visitors.keys, created_at: recent_cutoff..)
-      .select(:visitor_id, :session_id, :referer, :path)
-      .group_by(&:visitor_id)
+                        .where(created_at: recent_cutoff..)
+                        .joins(:visitor)
+                        .merge(Visitor.unflagged)
+                        .preload(:visitor)
+                        .select(:visitor_id, :session_id, :referer, :path)
+                        .group_by(&:visitor)
 
-    visitors.each_value do |visitor|
-      analyze_visitor(visitor, views_by_visitor[visitor.id] || [])
+    return if views_by_visitor.empty?
+
+    views_by_visitor.each do |visitor, views|
+      analyze_visitor(visitor, views)
     end
   end
 
