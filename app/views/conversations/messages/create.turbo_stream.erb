@@ -2,6 +2,9 @@
   <%= turbo_stream.append dom_id(@conversation, :messages),
       partial: "conversations/message",
       locals:  { message: @message } %>
+  <%= turbo_stream.replace dom_id(@conversation, :thinking),
+      partial: "conversations/thinking",
+      locals:  { conversation: @conversation } %>
   <%= turbo_stream.replace dom_id(@conversation, :message_form),
       partial: "conversations/message_form",
       locals:  { conversation: @conversation, message: Message.new } %>

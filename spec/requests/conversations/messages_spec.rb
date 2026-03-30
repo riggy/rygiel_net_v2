@@ -19,6 +19,14 @@ RSpec.describe "Conversations::Messages", type: :request do
         expect(Message.last.content).to eq("Hello there")
       end
 
+      it "enqueues GenerateChatResponseJob" do
+        expect {
+          post conversation_messages_path(conversation),
+               params:  { message: { content: "Hello" } },
+               headers: { "Accept" => "text/vnd.turbo-stream.html" }
+        }.to have_enqueued_job(GenerateChatResponseJob)
+      end
+
       it "returns a Turbo Stream response" do
         post conversation_messages_path(conversation),
              params:  { message: { content: "Hello" } },
