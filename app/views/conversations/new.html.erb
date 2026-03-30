@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "chat_panel" do %>
+  <div class="chat-intro">
+    <div class="chat-intro__avatar">KR</div>
+    <p class="text-surface text-sm font-medium mb-1">Krzysztof's AI</p>
+    <p class="text-muted text-xs mb-4">Ask me anything about Krzysztof — his work, experience, or projects.</p>
+    <%= button_to "Start Chat", conversations_path,
+        method: :post,
+        class:  "w-full py-2 px-4 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors duration-200" %>
+  </div>
+<% end %>
