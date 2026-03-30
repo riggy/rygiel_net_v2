@@ -1,5 +1,5 @@
 class PageView < ApplicationRecord
-  belongs_to :visitor, optional: true
+  belongs_to :visitor
 
   validates :path, presence: true
 
