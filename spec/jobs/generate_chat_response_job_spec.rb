@@ -20,12 +20,27 @@ RSpec.describe GenerateChatResponseJob, type: :job do
         expect(conversation.messages.last.content).to eq("Hi there!")
       end
 
-      it "broadcasts a message_created event over Action Cable" do
-        expect {
-          described_class.perform_now(conversation.id)
-        }.to have_broadcasted_to(conversation.channel_name).with(
-          hash_including(event: "message_created")
+      it "broadcasts a remove for the thinking indicator" do
+        expect(Turbo::StreamsChannel).to receive(:broadcast_remove_to).with(
+          conversation,
+          target: ActionView::RecordIdentifier.dom_id(conversation, :thinking)
         )
+        allow(Turbo::StreamsChannel).to receive(:broadcast_append_to)
+
+        described_class.perform_now(conversation.id)
+      end
+
+      it "broadcasts an append for the assistant message" do
+        allow(Turbo::StreamsChannel).to receive(:broadcast_remove_to)
+        expect(Turbo::StreamsChannel).to receive(:broadcast_append_to).with(
+          conversation,
+          hash_including(
+            target:  ActionView::RecordIdentifier.dom_id(conversation, :messages),
+            partial: "conversations/message"
+          )
+        )
+
+        described_class.perform_now(conversation.id)
       end
 
       it "updates last_activity_at on the conversation" do
@@ -46,12 +61,11 @@ RSpec.describe GenerateChatResponseJob, type: :job do
         expect(conversation.messages.last.content).to eq(GenerateChatResponseJob::FALLBACK)
       end
 
-      it "broadcasts the fallback over Action Cable" do
-        expect {
-          described_class.perform_now(conversation.id)
-        }.to have_broadcasted_to(conversation.channel_name).with(
-          hash_including(event: "message_created")
-        )
+      it "still broadcasts the fallback" do
+        allow(Turbo::StreamsChannel).to receive(:broadcast_remove_to)
+        expect(Turbo::StreamsChannel).to receive(:broadcast_append_to)
+
+        described_class.perform_now(conversation.id)
       end
     end
 
