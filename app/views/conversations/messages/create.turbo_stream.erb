@@ -1,0 +1,12 @@
+<% if @message.persisted? %>
+  <%= turbo_stream.append dom_id(@conversation, :messages),
+      partial: "conversations/message",
+      locals:  { message: @message } %>
+  <%= turbo_stream.replace dom_id(@conversation, :message_form),
+      partial: "conversations/message_form",
+      locals:  { conversation: @conversation, message: Message.new } %>
+<% else %>
+  <%= turbo_stream.replace dom_id(@conversation, :message_form),
+      partial: "conversations/message_form",
+      locals:  { conversation: @conversation, message: @message } %>
+<% end %>

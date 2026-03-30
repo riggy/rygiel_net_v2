@@ -10,7 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_24_164952) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_30_160652) do
+  create_table "conversations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "ip", null: false
+    t.datetime "last_activity_at", null: false
+    t.string "session_id"
+    t.datetime "updated_at", null: false
+    t.integer "visitor_id"
+    t.index ["last_activity_at"], name: "index_conversations_on_last_activity_at"
+    t.index ["visitor_id"], name: "index_conversations_on_visitor_id"
+  end
+
+  create_table "flipper_features", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "key", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_flipper_features_on_key", unique: true
+  end
+
+  create_table "flipper_gates", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "feature_key", null: false
+    t.string "key", null: false
+    t.datetime "updated_at", null: false
+    t.text "value"
+    t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "content", null: false
+    t.integer "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.string "role", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id", "created_at"], name: "index_messages_on_conversation_id_and_created_at"
+  end
+
   create_table "now_entries", force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
@@ -69,5 +105,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_164952) do
     t.index ["ip"], name: "index_visitors_on_ip", unique: true
   end
 
+  add_foreign_key "conversations", "visitors"
+  add_foreign_key "messages", "conversations"
   add_foreign_key "page_views", "visitors"
 end

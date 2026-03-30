@@ -38,6 +38,25 @@
 
     <%= yield %>
 
+    <% if Flipper.enabled?(:ai_chatbot) %>
+    <div class="chat-widget" data-controller="chat">
+      <button class="chat-widget__trigger" data-action="click->chat#toggle" type="button" aria-label="Open chat">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Chat</span>
+      </button>
+      <div class="chat-widget__panel hidden">
+        <div class="chat-widget__header">
+          <span class="text-surface text-sm font-medium">Ask Krzysztof's AI</span>
+        </div>
+        <%= turbo_frame_tag "chat_panel", src: new_conversation_path do %>
+          <div class="chat-widget__loading text-muted text-xs p-4">Loading…</div>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+
     <footer class="py-8 border-t border-border text-subtle text-[0.8125rem]">
       <div class="max-w-[1100px] mx-auto px-6">
         <div class="flex items-center justify-between gap-4">
