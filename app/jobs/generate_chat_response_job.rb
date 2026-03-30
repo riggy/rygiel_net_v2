@@ -14,24 +14,23 @@ class GenerateChatResponseJob < ApplicationJob
     message = conversation.messages.create!(role: "assistant", content: content)
     conversation.update_columns(last_activity_at: Time.current)
 
-    broadcast(conversation, message)
+    broadcast_response(conversation, message)
   rescue => e
     Rails.logger.error("GenerateChatResponseJob failed for conversation #{conversation_id}: #{e.message}")
     fallback = conversation&.messages&.create(role: "assistant", content: FALLBACK)
-    broadcast(conversation, fallback) if fallback&.persisted?
+    broadcast_response(conversation, fallback) if fallback&.persisted?
   end
 
   private
 
-  def broadcast(conversation, message)
-    ActionCable.server.broadcast(
-      conversation.channel_name,
-      { event: "message_created", html: render_message_html(message) }
+  def broadcast_response(conversation, message)
+    Turbo::StreamsChannel.broadcast_remove_to(
+      conversation,
+      target: ActionView::RecordIdentifier.dom_id(conversation, :thinking)
     )
-  end
-
-  def render_message_html(message)
-    ApplicationController.renderer.render(
+    Turbo::StreamsChannel.broadcast_append_to(
+      conversation,
+      target:  ActionView::RecordIdentifier.dom_id(conversation, :messages),
       partial: "conversations/message",
       locals:  { message: }
     )
