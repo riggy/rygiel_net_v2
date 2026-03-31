@@ -11,6 +11,7 @@ module Conversations
 
       if @message.save
         @conversation.update_columns(last_activity_at: Time.current)
+        GenerateChatResponseJob.perform_later(@conversation.id)
       end
 
       respond_to do |format|
