@@ -1,4 +1,6 @@
 <%= turbo_frame_tag "chat_panel" do %>
+  <%= turbo_stream_from @conversation %>
+
   <div class="chat-messages" id="<%= dom_id(@conversation, :messages) %>">
     <%= render @messages %>
   </div>
