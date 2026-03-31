@@ -261,6 +261,14 @@
     max-height: 520px;
   }
 
+  .chat-widget__panel turbo-frame {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
   .chat-widget__header {
     padding: 0.75rem 1rem;
     border-bottom: 1px solid #1c2d4a;
@@ -292,9 +300,9 @@
     letter-spacing: 0.05em;
   }
 
-  /* Message list */
+  /* Message list — grows with content, scrolls at max */
   .chat-messages {
-    flex: 1;
+    max-height: 380px;
     overflow-y: auto;
     padding: 1rem;
     display: flex;
