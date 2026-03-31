@@ -10,7 +10,7 @@ class ChatbotService < ApplicationService
     model = Rails.application.credentials.dig(:chatbot, :model_name).presence || DEFAULT_MODEL
     chat  = RubyLLM.chat(model:)
     chat.with_instructions(@system_prompt)
-    @messages.each { |m| chat << { role: m[:role], content: m[:content] } }
-    chat.complete.content
+    @messages[..-2].each { |m| chat.add_message(role: m[:role], content: m[:content]) }
+    chat.ask(@messages.last[:content]).content
   end
 end
