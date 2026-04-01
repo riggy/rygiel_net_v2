@@ -6,6 +6,7 @@ RSpec.describe GenerateChatResponseJob, type: :job do
   before do
     conversation.messages.create!(role: "user", content: "Hello")
     allow(SiteConfig).to receive(:get).with("chatbot_system_prompt").and_return("You are helpful.")
+    allow(ChatbotContext).to receive(:call).and_return("## Skills\nRuby, Rails")
   end
 
   describe "#perform" do
