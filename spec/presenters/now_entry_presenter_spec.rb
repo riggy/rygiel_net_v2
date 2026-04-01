@@ -18,4 +18,12 @@ RSpec.describe NowEntryPresenter do
     presenter = NowEntryPresenter.new(now_entry)
     expect(presenter.content.strip).to eq("")
   end
+
+  describe "#chatbot_context" do
+    it "returns raw content without markdown rendering" do
+      now_entry = NowEntry.new(content: "Working on **Rails** projects.")
+      presenter = NowEntryPresenter.new(now_entry)
+      expect(presenter.chatbot_context).to eq("Working on **Rails** projects.")
+    end
+  end
 end

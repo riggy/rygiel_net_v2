@@ -12,4 +12,8 @@ class NowEntryPresenter
   def content
     markdown(@now_entry.content)
   end
+
+  def chatbot_context
+    @now_entry.content
+  end
 end
