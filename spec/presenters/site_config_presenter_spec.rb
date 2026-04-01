@@ -82,4 +82,25 @@ RSpec.describe SiteConfigPresenter do
     presenter.define_singleton_method(:profile_photo_path) { "krzysztof-rygielski.png" }
     expect(presenter.profile_photo_alt).to eq("Krzysztof Rygielski")
   end
+
+  describe "#chatbot_context" do
+    it "includes about text and skills" do
+      result = build.chatbot_context
+      expect(result).to include("About: **Bold text** paragraph.")
+      expect(result).to include("Skills: Ruby, Rails, SQLite")
+    end
+
+    it "includes contact info" do
+      result = build.chatbot_context
+      expect(result).to include("Contact: test@example.com")
+      expect(result).to include("GitHub: https://github.com/test")
+      expect(result).to include("LinkedIn: https://linkedin.com/in/test")
+    end
+
+    it "omits blank fields" do
+      result = build("about_text" => "", "skills" => nil).chatbot_context
+      expect(result).not_to include("About:")
+      expect(result).not_to include("Skills:")
+    end
+  end
 end

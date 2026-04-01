@@ -51,4 +51,14 @@ class SiteConfigPresenter
   def contact_github
     @site_config["contact_github"]
   end
+
+  def chatbot_context
+    sections = []
+    sections << "About: #{@site_config['about_text']}" if @site_config["about_text"].present?
+    sections << "Skills: #{@site_config['skills']}" if @site_config["skills"].present?
+    sections << "Contact: #{@site_config['contact_email']}" if @site_config["contact_email"].present?
+    sections << "GitHub: #{@site_config['contact_github']}" if @site_config["contact_github"].present?
+    sections << "LinkedIn: #{@site_config['contact_linkedin']}" if @site_config["contact_linkedin"].present?
+    sections.join("\n")
+  end
 end

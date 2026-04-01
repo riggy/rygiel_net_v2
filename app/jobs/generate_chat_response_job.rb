@@ -7,7 +7,7 @@ class GenerateChatResponseJob < ApplicationJob
     conversation = Conversation.find_by(id: conversation_id)
     return unless conversation
 
-    system_prompt = SiteConfig.get("chatbot_system_prompt").presence || default_system_prompt
+    system_prompt = build_system_prompt
     api_messages  = conversation.messages.for_api.map { |m| { role: m.role, content: m.content } }
 
     content = ChatbotService.call(system_prompt:, messages: api_messages)
@@ -34,6 +34,12 @@ class GenerateChatResponseJob < ApplicationJob
       partial: "conversations/message",
       locals:  { message: }
     )
+  end
+
+  def build_system_prompt
+    base = SiteConfig.get("chatbot_system_prompt").presence || default_system_prompt
+    context = ChatbotContext.call
+    "#{base}\n\n---\n\nHere is information about Krzysztof based on his website:\n\n#{context}"
   end
 
   def default_system_prompt

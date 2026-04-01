@@ -9,4 +9,8 @@ class PostPresenter < SimpleDelegator
   def body
     markdown(@post.body)
   end
+
+  def chatbot_context
+    "- **#{title}** (#{published_at&.strftime('%b %Y')}): #{@post.body.truncate(200)}"
+  end
 end
