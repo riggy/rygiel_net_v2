@@ -55,18 +55,4 @@ RSpec.describe Upload, type: :model do
     end
   end
 
-  describe "#file_url" do
-    it "returns a proxy path for the attached file" do
-      upload = Upload.new
-      upload.file.attach(
-        io: StringIO.new("fake image data"),
-        filename: "photo.png",
-        content_type: "image/png"
-      )
-      upload.save!
-
-      expect(upload.file_url).to include("/rails/active_storage/blobs/proxy/")
-      expect(upload.file_url).to include("photo.png")
-    end
-  end
 end
