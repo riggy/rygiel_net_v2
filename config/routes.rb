@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     resources :site_configs, only: [ :index, :edit, :update ]
     resource :analytics, only: :show do
       post :flag_visitor
+      delete :unflag_visitor
     end
     get :emojis, to: "emojis#index"
   end
