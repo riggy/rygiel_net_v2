@@ -19,7 +19,21 @@
     <%= f.label :body, class: "block text-[0.8125rem] font-medium text-muted mb-2" do %>
       Body <span class="text-subtle font-normal ml-1">(Markdown)</span>
     <% end %>
-    <%= f.text_area :body, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[220px] leading-relaxed font-mono text-[0.8125rem]", rows: 20, placeholder: "Write in Markdown...", data: { markdown_editor_target: "input" } %>
+    <div class="flex items-center gap-2 mb-2">
+      <button type="button"
+              data-action="click->markdown-editor#handleButtonClick"
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium text-muted bg-card-hover border border-border hover:text-surface hover:border-border-hover transition-colors cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Add image
+      </button>
+      <span class="text-subtle text-xs">or paste / drag an image</span>
+    </div>
+    <input type="file"
+           accept="image/png,image/jpeg,image/gif,image/webp"
+           class="hidden"
+           data-markdown-editor-target="fileInput"
+           data-action="change->markdown-editor#handleFileSelect">
+    <%= f.text_area :body, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[220px] leading-relaxed font-mono text-[0.8125rem]", rows: 20, placeholder: "Write in Markdown...", data: { markdown_editor_target: "input", action: "paste->markdown-editor#handlePaste drop->markdown-editor#handleDrop dragover->markdown-editor#handleDragover" } %>
   </div>
 
   <div class="mb-5">

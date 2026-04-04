@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :posts
     resources :projects
     resources :now_entries
+    resources :uploads, only: [ :create ]
     resources :site_configs, only: [ :index, :edit, :update ]
     resource :analytics, only: :show do
       post :flag_visitor
