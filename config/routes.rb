@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       post :flag_visitor
       delete :unflag_visitor
     end
+    resources :whitelisted_ips, only: :create
     get :emojis, to: "emojis#index"
   end
 end
