@@ -48,6 +48,12 @@ Rack::Attack.safelist("allow local/dev") do |req|
   req.ip == "127.0.0.1"
 end
 
+Rack::Attack.safelist("allow whitelisted IPs") do |req|
+  Rails.cache.fetch("whitelisted_ips", expires_in: 10.minutes) do
+    WhitelistedIp.active.pluck(:ip)
+  end.include?(req.ip)
+end
+
 Rack::Attack.throttle("requests by ip", limit: 100, period: 1.minute) do |request|
   request.ip
 end

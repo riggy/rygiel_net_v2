@@ -5,6 +5,7 @@ class Admin::WhitelistedIpsController < Admin::BaseController
     record = WhitelistedIp.find_or_initialize_by(ip: params.fetch(:ip))
     record.expires_at = params.fetch(:expires_at, 7.days.from_now)
     record.save!
+    Rails.cache.delete("whitelisted_ips")
 
     render json: { status: "ok", ip: record.ip, expires_at: record.expires_at }
   rescue ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e

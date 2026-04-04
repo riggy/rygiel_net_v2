@@ -15,6 +15,8 @@ RSpec.describe "Admin::Analytics", type: :request do
     let!(:visitor) { Visitor.create!(ip: "1.2.3.4", first_seen_at: Time.current, last_seen_at: Time.current) }
 
     it "flags a visitor by IP" do
+      Rails.cache.write("flagged_ips", [ "1.2.3.4" ])
+
       post "/admin/analytics/flag_visitor",
         params: { ip: "1.2.3.4", flag_reason: "spam", flagged_by: "admin" },
         headers: auth_headers
@@ -25,6 +27,7 @@ RSpec.describe "Admin::Analytics", type: :request do
       expect(data["ip"]).to eq("1.2.3.4")
       expect(data["flagged_at"]).to be_present
       expect(visitor.reload.flagged_at).to be_present
+      expect(Rails.cache.read("flagged_ips")).to be_nil
     end
 
     it "returns 404 for unknown IP" do
@@ -55,6 +58,8 @@ RSpec.describe "Admin::Analytics", type: :request do
     end
 
     it "unflags a visitor by IP" do
+      Rails.cache.write("flagged_ips", [ "1.2.3.4" ])
+
       delete "/admin/analytics/unflag_visitor",
         params: { ip: "1.2.3.4" },
         headers: auth_headers
@@ -68,6 +73,7 @@ RSpec.describe "Admin::Analytics", type: :request do
       expect(visitor.flagged_at).to be_nil
       expect(visitor.flag_reason).to be_nil
       expect(visitor.flagged_by).to be_nil
+      expect(Rails.cache.read("flagged_ips")).to be_nil
     end
 
     it "returns 404 for unknown IP" do
