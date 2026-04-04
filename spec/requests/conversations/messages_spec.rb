@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Conversations::Messages", type: :request do
-  let(:conversation) { Conversation.create!(ip: "127.0.0.1") }
+  let(:conversation) { create(:conversation) }
 
   before { Flipper.enable(:ai_chatbot) }
   after  { Flipper.disable(:ai_chatbot) }
