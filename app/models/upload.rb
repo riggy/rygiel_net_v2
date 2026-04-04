@@ -4,10 +4,6 @@ class Upload < ApplicationRecord
   validates :file, presence: true
   validate :acceptable_file
 
-  def file_url
-    Rails.application.routes.url_helpers.rails_storage_proxy_path(file, only_path: true)
-  end
-
   private
 
   def acceptable_file

@@ -4,9 +4,10 @@ class Admin::UploadsController < Admin::BaseController
     upload.file.attach(params[:file])
 
     if upload.save
+      presenter = UploadPresenter.new(upload)
       render json: {
-        url: upload.file_url,
-        filename: upload.file.filename.to_s
+        url: presenter.file_url,
+        filename: presenter.filename
       }, status: :created
     else
       render json: { error: upload.errors.full_messages.join(", ") },
