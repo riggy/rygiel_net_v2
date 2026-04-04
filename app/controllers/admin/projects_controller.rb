@@ -2,7 +2,14 @@ class Admin::ProjectsController < Admin::BaseController
   before_action :set_project, only: %i[edit update destroy]
 
   def index
-    @projects = Project.order(created_at: :desc)
+    @projects = Project.positioned
+  end
+
+  def sort
+    params[:project_ids].each_with_index do |id, index|
+      Project.where(id: id).update_all(position: index)
+    end
+    head :no_content
   end
 
   def new
