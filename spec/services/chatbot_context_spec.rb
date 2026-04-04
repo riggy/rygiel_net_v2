@@ -10,44 +10,44 @@ RSpec.describe ChatbotContext do
 
   describe ".call" do
     it "includes about text from SiteConfig" do
-      SiteConfig.create!(key: "about_text", value: "I'm a developer.")
+      create(:site_config_about_text, value: "I'm a developer.")
       result = described_class.call
       expect(result).to include("About: I'm a developer.")
     end
 
     it "includes skills from SiteConfig" do
-      SiteConfig.create!(key: "skills", value: "Ruby, Rails")
+      create(:site_config_skills, value: "Ruby, Rails")
       result = described_class.call
       expect(result).to include("Skills: Ruby, Rails")
     end
 
     it "includes featured projects" do
-      Project.create!(name: "Cool App", description: "Does things", tech_tags: "Ruby", featured: true)
+      create(:project, :featured, name: "Cool App", description: "Does things", tech_tags: "Ruby")
       result = described_class.call
       expect(result).to include("**Cool App**")
       expect(result).to include("Does things")
     end
 
     it "excludes non-featured projects" do
-      Project.create!(name: "Hidden", description: "Secret", tech_tags: "Go", featured: false)
+      create(:project, name: "Hidden", description: "Secret", tech_tags: "Go")
       result = described_class.call
       expect(result).not_to include("Hidden")
     end
 
     it "includes published blog posts" do
-      Post.create!(title: "My Post", body: "Some content here", published: true, published_at: Time.current)
+      create(:post, :published, title: "My Post", body: "Some content here")
       result = described_class.call
       expect(result).to include("**My Post**")
     end
 
     it "excludes unpublished blog posts" do
-      Post.create!(title: "Draft", body: "Not ready", published: false)
+      create(:post, title: "Draft", body: "Not ready")
       result = described_class.call
       expect(result).not_to include("Draft")
     end
 
     it "includes the latest now entry" do
-      NowEntry.create!(content: "Working on chatbot features")
+      create(:now_entry, content: "Working on chatbot features")
       result = described_class.call
       expect(result).to include("Working on chatbot features")
     end
@@ -58,7 +58,7 @@ RSpec.describe ChatbotContext do
     end
 
     it "limits blog posts to 5" do
-      7.times { |i| Post.create!(title: "Post #{i}", body: "Body", published: true, published_at: i.days.ago) }
+      7.times { |i| create(:post, :published, title: "Post #{i}", published_at: i.days.ago) }
       result = described_class.call
       expect(result.scan(/\*\*Post \d\*\*/).size).to eq(5)
     end

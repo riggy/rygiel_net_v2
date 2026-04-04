@@ -1,10 +1,10 @@
 require "rails_helper"
 
 RSpec.describe GenerateChatResponseJob, type: :job do
-  let(:conversation) { Conversation.create!(ip: "1.2.3.4") }
+  let(:conversation) { create(:conversation) }
 
   before do
-    conversation.messages.create!(role: "user", content: "Hello")
+    create(:message, :user, conversation: conversation, content: "Hello")
     allow(SiteConfig).to receive(:get).with("chatbot_system_prompt").and_return("You are helpful.")
     allow(ChatbotContext).to receive(:call).and_return("## Skills\nRuby, Rails")
   end
