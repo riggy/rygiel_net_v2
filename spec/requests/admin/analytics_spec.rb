@@ -12,7 +12,7 @@ RSpec.describe "Admin::Analytics", type: :request do
   end
 
   describe "POST /admin/analytics/flag_visitor" do
-    let!(:visitor) { Visitor.create!(ip: "1.2.3.4", first_seen_at: Time.current, last_seen_at: Time.current) }
+    let!(:visitor) { create(:visitor, ip: "1.2.3.4") }
 
     it "flags a visitor by IP" do
       Rails.cache.write("flagged_ips", [ "1.2.3.4" ])
@@ -46,16 +46,7 @@ RSpec.describe "Admin::Analytics", type: :request do
   end
 
   describe "DELETE /admin/analytics/unflag_visitor" do
-    let!(:visitor) do
-      Visitor.create!(
-        ip: "1.2.3.4",
-        first_seen_at: Time.current,
-        last_seen_at: Time.current,
-        flagged_at: Time.current,
-        flag_reason: "spam",
-        flagged_by: "admin"
-      )
-    end
+    let!(:visitor) { create(:visitor, :flagged, ip: "1.2.3.4") }
 
     it "unflags a visitor by IP" do
       Rails.cache.write("flagged_ips", [ "1.2.3.4" ])
