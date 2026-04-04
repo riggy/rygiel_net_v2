@@ -13,6 +13,8 @@ RSpec.describe "Admin::WhitelistedIps", type: :request do
 
   describe "POST /admin/whitelisted_ips" do
     it "creates a new whitelist entry with default 7-day expiry" do
+      Rails.cache.write("whitelisted_ips", [])
+
       post "/admin/whitelisted_ips",
         params: { ip: "1.2.3.4" },
         headers: auth_headers
@@ -25,6 +27,7 @@ RSpec.describe "Admin::WhitelistedIps", type: :request do
 
       record = WhitelistedIp.find_by!(ip: "1.2.3.4")
       expect(record.expires_at).to be_within(5.seconds).of(7.days.from_now)
+      expect(Rails.cache.read("whitelisted_ips")).to be_nil
     end
 
     it "updates an existing entry (idempotent)" do

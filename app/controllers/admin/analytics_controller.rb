@@ -29,6 +29,7 @@ class Admin::AnalyticsController < Admin::BaseController
   def flag_visitor
     visitor = Visitor.find_by!(ip: params[:ip])
     visitor.update!(flagged_at: Time.current, flag_reason: params[:flag_reason], flagged_by: params[:flagged_by])
+    Rails.cache.delete("flagged_ips")
     render json: { status: "ok", ip: visitor.ip, flagged_at: visitor.flagged_at }, status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Visitor not found" }, status: :not_found
@@ -37,6 +38,7 @@ class Admin::AnalyticsController < Admin::BaseController
   def unflag_visitor
     visitor = Visitor.find_by!(ip: params[:ip])
     visitor.update!(flagged_at: nil, flag_reason: nil, flagged_by: nil)
+    Rails.cache.delete("flagged_ips")
     render json: { status: "ok", ip: visitor.ip }, status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Visitor not found" }, status: :not_found
