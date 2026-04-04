@@ -154,6 +154,24 @@ RSpec.describe DetectSuspiciousVisitorsJob, type: :job do
     expect(v.flag_reason).to include("no referer")
   end
 
+  # --- whitelist ---
+
+  it "skips flagging a visitor with an active whitelist entry" do
+    v = make_visitor
+    WhitelistedIp.create!(ip: v.ip, expires_at: 7.days.from_now)
+    make_views(v, count: 50)
+    run_job
+    expect(v.reload.flagged_at).to be_nil
+  end
+
+  it "flags a visitor whose whitelist entry has expired" do
+    v = make_visitor
+    WhitelistedIp.create!(ip: v.ip, expires_at: 1.second.ago)
+    make_views(v, count: 50)
+    run_job
+    expect(v.reload.flagged_at).not_to be_nil
+  end
+
   # --- no-op when nothing to process ---
 
   it "completes without error when no unflagged visitors exist" do

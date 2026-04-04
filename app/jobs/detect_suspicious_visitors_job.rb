@@ -37,6 +37,7 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
   def analyze_visitor(visitor, views)
     count = views.size
     return if count.zero?
+    return if WhitelistedIp.whitelisted?(visitor.ip)
 
     if count >= HARD_FLAG_THRESHOLD
       flag!(visitor, "#{count} page views in 24h (hard flag threshold)")
