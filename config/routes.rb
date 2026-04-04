@@ -15,7 +15,11 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: "posts#index"
     resources :posts
-    resources :projects
+    resources :projects do
+      collection do
+        patch :sort
+      end
+    end
     resources :now_entries
     resources :uploads, only: [ :create ]
     resources :site_configs, only: [ :index, :edit, :update ]
