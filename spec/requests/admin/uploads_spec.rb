@@ -16,7 +16,10 @@ RSpec.describe "Admin::Uploads", type: :request do
     end
 
     it "uploads a valid image and returns JSON with url and filename" do
-      file = fixture_file_upload("test_image.png", "image/png")
+      file = Rack::Test::UploadedFile.new(
+        Rails.root.join("spec/fixtures/files/test_image.png"),
+        "image/png"
+      )
 
       post "/admin/uploads", params: { file: file }, headers: { "Authorization" => credentials }
 
@@ -28,7 +31,10 @@ RSpec.describe "Admin::Uploads", type: :request do
     end
 
     it "rejects non-image files" do
-      file = fixture_file_upload("test_document.txt", "text/plain")
+      file = Rack::Test::UploadedFile.new(
+        Rails.root.join("spec/fixtures/files/test_document.txt"),
+        "text/plain"
+      )
 
       post "/admin/uploads", params: { file: file }, headers: { "Authorization" => credentials }
 

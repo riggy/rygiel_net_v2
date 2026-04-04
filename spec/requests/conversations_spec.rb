@@ -27,7 +27,7 @@ RSpec.describe "Conversations", type: :request do
   end
 
   describe "GET /conversations/:id" do
-    let(:conversation) { Conversation.create!(ip: "127.0.0.1") }
+    let(:conversation) { create(:conversation) }
 
     it "returns a successful response" do
       get conversation_path(conversation)

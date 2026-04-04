@@ -1,9 +1,9 @@
 require "rails_helper"
 
 RSpec.describe Message, type: :model do
-  let(:conversation) { Conversation.create!(ip: "1.2.3.4") }
+  let(:conversation) { create(:conversation) }
 
-  subject(:message) { Message.new(conversation: conversation, role: "user", content: "Hello") }
+  subject(:message) { build(:message, conversation: conversation) }
 
   describe "validations" do
     it "is valid with role and content" do

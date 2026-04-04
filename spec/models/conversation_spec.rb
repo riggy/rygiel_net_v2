@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Conversation, type: :model do
-  subject(:conversation) { Conversation.new(ip: "1.2.3.4") }
+  subject(:conversation) { build(:conversation) }
 
   describe "validations" do
     it "is valid with ip and last_activity_at" do
@@ -47,8 +47,8 @@ RSpec.describe Conversation, type: :model do
 
   describe ".recent" do
     it "orders by last_activity_at descending" do
-      old_conv = Conversation.create!(ip: "1.1.1.1", last_activity_at: 2.hours.ago)
-      new_conv = Conversation.create!(ip: "2.2.2.2", last_activity_at: 1.hour.ago)
+      old_conv = create(:conversation, last_activity_at: 2.hours.ago)
+      new_conv = create(:conversation, last_activity_at: 1.hour.ago)
       expect(Conversation.recent.first).to eq(new_conv)
       expect(Conversation.recent.last).to eq(old_conv)
     end
