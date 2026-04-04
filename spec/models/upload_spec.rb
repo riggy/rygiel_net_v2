@@ -54,5 +54,4 @@ RSpec.describe Upload, type: :model do
       expect(upload).to be_valid
     end
   end
-
 end
