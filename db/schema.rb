@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_06_101538) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_06_155635) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -48,6 +48,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_101538) do
     t.integer "visitor_id"
     t.index ["last_activity_at"], name: "index_conversations_on_last_activity_at"
     t.index ["visitor_id"], name: "index_conversations_on_visitor_id"
+  end
+
+  create_table "cv_contents", force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "flipper_features", force: :cascade do |t|

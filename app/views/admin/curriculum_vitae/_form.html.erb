@@ -1,0 +1,26 @@
+<% if curriculum_vitae.errors.any? %>
+  <div class="bg-red-500/8 border border-red-500/20 text-red-400 px-4 py-3 rounded text-sm mb-6">
+    <strong><%= curriculum_vitae.errors.count %> <%= "error".pluralize(curriculum_vitae.errors.count) %> prevented saving:</strong>
+    <ul class="mt-1.5 ml-4">
+      <% curriculum_vitae.errors.full_messages.each do |msg| %>
+        <li class="mb-1"><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: [ :admin, curriculum_vitae ], url: admin_curriculum_vitae_path, method: :patch, class: "max-w-[760px]" do |f| %>
+  <div class="mb-5" data-controller="markdown-editor">
+    <%= f.label :content, "Content (Markdown)", class: "block text-[0.8125rem] font-medium text-muted mb-2" %>
+    <%= f.text_area :content,
+        class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none resize-y min-h-[400px] leading-relaxed",
+        rows: 20,
+        autofocus: true,
+        placeholder: "Your CV in Markdown. Use # for name, ## for sections, **bold** for emphasis.",
+        data: { markdown_editor_target: "input" } %>
+  </div>
+
+  <div class="flex items-center gap-3 mt-7 pt-7 border-t border-border">
+    <%= f.submit "Save CV", class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-accent text-white border border-accent hover:bg-accent-hover hover:border-accent-hover cursor-pointer" %>
+  </div>
+<% end %>
