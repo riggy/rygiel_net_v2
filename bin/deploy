@@ -24,6 +24,9 @@ cd $APP_DIR
 echo "📦 Pulling latest code..."
 git pull origin main
 
+echo "📦 Installing Node dependencies..."
+yarn install --frozen-lockfile
+
 echo "💎 Installing gems..."
 RAILS_ENV=production bundle config set --local without 'development test'
 RAILS_ENV=production bundle install
