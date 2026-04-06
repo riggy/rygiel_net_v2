@@ -6,6 +6,12 @@ end
 json.top_pages @top_pages
 json.top_referrers @top_referrers
 json.top_sources @top_sources
+json.top_referral_links @top_referral_links do |link|
+  json.name        link.name
+  json.slug        link.slug
+  json.target_path link.target_path
+  json.clicks      link.clicks
+end
 json.recent @recent do |pv|
   json.path         pv.path
   json.ip           pv.visitor&.ip

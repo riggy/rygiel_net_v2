@@ -89,6 +89,33 @@
   <p class="text-subtle text-[0.9375rem] py-4 mb-8">No source data yet.</p>
 <% end %>
 
+<%# Top referral link clicks %>
+<h2 class="text-sm font-semibold text-surface uppercase tracking-wider mb-3">Top Referral Link Clicks</h2>
+<% if @top_referral_links.any? %>
+  <table class="w-full border-collapse text-sm mb-8">
+    <thead>
+      <tr>
+        <th class="text-left p-3.5 text-subtle text-xs uppercase tracking-wider border-b border-border">Name</th>
+        <th class="text-left p-3.5 text-subtle text-xs uppercase tracking-wider border-b border-border hidden md:table-cell">Slug</th>
+        <th class="text-left p-3.5 text-subtle text-xs uppercase tracking-wider border-b border-border hidden md:table-cell">Target</th>
+        <th class="text-right p-3.5 text-subtle text-xs uppercase tracking-wider border-b border-border">Clicks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @top_referral_links.each do |link| %>
+        <tr>
+          <td class="p-3.5 border-b border-border text-surface font-medium"><%= link.name %></td>
+          <td class="p-3.5 border-b border-border text-muted font-mono text-xs hidden md:table-cell">/go/<%= link.slug %></td>
+          <td class="p-3.5 border-b border-border text-muted hidden md:table-cell"><%= link.target_path %></td>
+          <td class="p-3.5 border-b border-border text-muted text-right"><%= link.clicks %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="text-subtle text-[0.9375rem] py-4 mb-8">No referral link clicks yet.</p>
+<% end %>
+
 <%# Recent visits %>
 <h2 class="text-sm font-semibold text-surface uppercase tracking-wider mb-3">Recent Visits</h2>
 <% if @recent.any? %>

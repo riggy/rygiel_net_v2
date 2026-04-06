@@ -11,8 +11,7 @@ class TrackPageViewJob < ApplicationJob
     end
     visitor.update!(last_seen_at: Time.current, user_agent: user_agent)
 
-    PageView.find_or_create_by!(path:, user_agent:, referer:, session_id: hashed_session_id, trace_id:, visitor:) do |pv|
-      pv.source = source
-    end
+    PageView.create_with(source:)
+            .find_or_create_by!(path:, user_agent:, referer:, session_id: hashed_session_id, trace_id:, visitor:)
   end
 end
