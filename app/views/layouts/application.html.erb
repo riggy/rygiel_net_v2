@@ -22,17 +22,39 @@
   </head>
 
   <body class="bg-bg text-surface antialiased" data-controller="page-tracker">
-    <nav class="fixed top-0 inset-x-0 z-50 bg-[rgba(7,16,31,0.85)] backdrop-blur-md border-b border-border">
+    <nav class="fixed top-0 inset-x-0 z-50 bg-[rgba(7,16,31,0.85)] backdrop-blur-md border-b border-border" data-controller="mobile-menu">
       <div class="max-w-[1100px] mx-auto px-6 h-[60px] flex items-center justify-between">
         <%= link_to "KR", root_path, class: "font-bold tracking-widest text-surface no-underline" %>
         <ul class="hidden sm:flex list-none gap-8 m-0 p-0 items-center">
-          <li><a href="/#about" data-turbo="false"data-turbo="false" class="text-muted text-[0.8125rem] font-medium no-underline hover:text-accent hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.55)] transition-all duration-200">About</a></li>
+          <li><a href="/#about" data-turbo="false" class="text-muted text-[0.8125rem] font-medium no-underline hover:text-accent hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.55)] transition-all duration-200">About</a></li>
           <li><a href="/#skills" data-turbo="false" class="text-muted text-[0.8125rem] font-medium no-underline hover:text-accent hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.55)] transition-all duration-200">Skills</a></li>
           <li><a href="/#projects" data-turbo="false" class="text-muted text-[0.8125rem] font-medium no-underline hover:text-accent hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.55)] transition-all duration-200">Projects</a></li>
           <li><a href="/#blog" data-turbo="false" class="text-muted text-[0.8125rem] font-medium no-underline hover:text-accent hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.55)] transition-all duration-200">Blog</a></li>
           <li><a href="/#now" data-turbo="false" class="text-muted text-[0.8125rem] font-medium no-underline hover:text-accent hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.55)] transition-all duration-200">Now</a></li>
           <li><%= link_to "CV", cv_path, class: "text-muted text-[0.8125rem] font-medium no-underline hover:text-accent hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.55)] transition-all duration-200" %></li>
           <li><a href="/#contact" data-turbo="false" class="text-muted text-[0.8125rem] font-medium no-underline hover:text-accent hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.55)] transition-all duration-200">Contact</a></li>
+        </ul>
+        <button class="sm:hidden flex items-center justify-center w-9 h-9 text-muted hover:text-accent transition-colors duration-200" data-action="click->mobile-menu#toggle" aria-label="Toggle navigation">
+          <svg data-mobile-menu-target="open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <svg data-mobile-menu-target="close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div data-mobile-menu-target="menu" class="hidden sm:hidden absolute top-[60px] inset-x-0 bg-[rgba(7,16,31,0.95)] backdrop-blur-md border-b border-border">
+        <ul class="flex flex-col list-none m-0 px-6 py-3 gap-0">
+          <li><a href="/#about" data-turbo="false" data-action="click->mobile-menu#toggle" class="block py-3 text-muted text-[0.9375rem] font-medium no-underline hover:text-accent transition-colors duration-200 border-b border-border">About</a></li>
+          <li><a href="/#skills" data-turbo="false" data-action="click->mobile-menu#toggle" class="block py-3 text-muted text-[0.9375rem] font-medium no-underline hover:text-accent transition-colors duration-200 border-b border-border">Skills</a></li>
+          <li><a href="/#projects" data-turbo="false" data-action="click->mobile-menu#toggle" class="block py-3 text-muted text-[0.9375rem] font-medium no-underline hover:text-accent transition-colors duration-200 border-b border-border">Projects</a></li>
+          <li><a href="/#blog" data-turbo="false" data-action="click->mobile-menu#toggle" class="block py-3 text-muted text-[0.9375rem] font-medium no-underline hover:text-accent transition-colors duration-200 border-b border-border">Blog</a></li>
+          <li><a href="/#now" data-turbo="false" data-action="click->mobile-menu#toggle" class="block py-3 text-muted text-[0.9375rem] font-medium no-underline hover:text-accent transition-colors duration-200 border-b border-border">Now</a></li>
+          <li><%= link_to "CV", cv_path, data: { action: "click->mobile-menu#toggle" }, class: "block py-3 text-muted text-[0.9375rem] font-medium no-underline hover:text-accent transition-colors duration-200 border-b border-border" %></li>
+          <li><a href="/#contact" data-turbo="false" data-action="click->mobile-menu#toggle" class="block py-3 text-muted text-[0.9375rem] font-medium no-underline hover:text-accent transition-colors duration-200">Contact</a></li>
         </ul>
       </div>
     </nav>
