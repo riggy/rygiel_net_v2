@@ -18,4 +18,8 @@ class CurriculumVitaePresenter
   def present?
     @curriculum_vitae.persisted? && @curriculum_vitae.content.present?
   end
+
+  def chatbot_context
+    @curriculum_vitae.content
+  end
 end
