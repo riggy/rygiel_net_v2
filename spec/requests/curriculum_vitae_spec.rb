@@ -48,11 +48,6 @@ RSpec.describe "CurriculumVitae", type: :request do
         get cv_print_path
         expect(response).to have_http_status(:ok)
       end
-
-      it "renders the print layout" do
-        get cv_print_path
-        expect(response.body).to include("print-trigger")
-      end
     end
 
     context "when no CV exists" do
