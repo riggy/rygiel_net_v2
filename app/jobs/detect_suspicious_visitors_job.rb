@@ -21,7 +21,7 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
                         .where(created_at: recent_cutoff..)
                         .joins(:visitor)
                         .merge(Visitor.unflagged)
-                        .preload(:visitor)
+                        .preload(visitor: :whitelisted_ip)
                         .select(:visitor_id, :session_id, :referer, :path)
                         .group_by(&:visitor)
 
@@ -37,7 +37,7 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
   def analyze_visitor(visitor, views)
     count = views.size
     return if count.zero?
-    return if WhitelistedIp.whitelisted?(visitor.ip)
+    return if visitor.whitelisted_ip&.active?
 
     if count >= HARD_FLAG_THRESHOLD
       flag!(visitor, "#{count} page views in 24h (hard flag threshold)")
