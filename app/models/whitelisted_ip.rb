@@ -1,4 +1,6 @@
 class WhitelistedIp < ApplicationRecord
+  belongs_to :visitor, optional: true
+
   validates :ip, presence: true, uniqueness: true
   validates :expires_at, presence: true
 
@@ -6,5 +8,9 @@ class WhitelistedIp < ApplicationRecord
 
   def self.whitelisted?(ip)
     active.exists?(ip: ip)
+  end
+
+  def active?
+    expires_at > Time.current
   end
 end

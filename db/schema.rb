@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_04_163143) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_06_101538) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -144,8 +144,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_04_163143) do
     t.datetime "expires_at", null: false
     t.string "ip", null: false
     t.datetime "updated_at", null: false
+    t.integer "visitor_id"
     t.index ["expires_at"], name: "index_whitelisted_ips_on_expires_at"
     t.index ["ip"], name: "index_whitelisted_ips_on_ip", unique: true
+    t.index ["visitor_id"], name: "index_whitelisted_ips_on_visitor_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -153,4 +155,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_04_163143) do
   add_foreign_key "conversations", "visitors"
   add_foreign_key "messages", "conversations"
   add_foreign_key "page_views", "visitors"
+  add_foreign_key "whitelisted_ips", "visitors"
 end
