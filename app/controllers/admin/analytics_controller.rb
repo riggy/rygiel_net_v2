@@ -12,18 +12,20 @@ class Admin::AnalyticsController < Admin::BaseController
                          .count
 
     @top_referrers = PageView.last_30
-                             .where.not(referer: [ nil, "" ])
+                             .with_referrer
                              .group(:referer)
                              .order("count_all DESC")
                              .limit(10)
                              .count
 
     @top_sources = PageView.last_30
-                           .where.not(source: [ nil, "" ])
+                           .with_source
                            .group(:source)
                            .order("count_all DESC")
                            .limit(10)
                            .count
+
+    @top_referral_links = ReferralLink.where("clicks > 0").order(clicks: :desc).limit(10)
 
     @recent = PageView.order(created_at: :desc).limit(20).includes(visitor: :whitelisted_ip)
 
