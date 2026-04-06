@@ -4,7 +4,8 @@ class ChatbotContext < ApplicationService
       site_config_section,
       projects_section,
       blog_section,
-      now_section
+      now_section,
+      cv_section
     ].compact
 
     sections.join("\n\n")
@@ -36,5 +37,11 @@ class ChatbotContext < ApplicationService
     entry = NowEntry.order(created_at: :desc).first
     return unless entry
     "## What Krzysztof Is Doing Now\n#{NowEntryPresenter.new(entry).chatbot_context}"
+  end
+
+  def cv_section
+    cv = CurriculumVitae.current
+    return unless cv.persisted? && cv.content.present?
+    "## Curriculum Vitae\n#{CurriculumVitaePresenter.new(cv).chatbot_context}"
   end
 end
