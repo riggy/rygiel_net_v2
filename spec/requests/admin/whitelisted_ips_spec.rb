@@ -59,5 +59,16 @@ RSpec.describe "Admin::WhitelistedIps", type: :request do
 
       expect(response).to have_http_status(:unauthorized)
     end
+
+    it "associates an existing visitor with the same IP" do
+      visitor = create(:visitor, ip: "1.2.3.4")
+
+      post "/admin/whitelisted_ips",
+        params: { ip: "1.2.3.4" },
+        headers: auth_headers
+
+      expect(response).to have_http_status(:ok)
+      expect(WhitelistedIp.find_by!(ip: "1.2.3.4").visitor).to eq(visitor)
+    end
   end
 end
