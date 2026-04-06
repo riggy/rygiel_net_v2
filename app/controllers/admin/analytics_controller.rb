@@ -18,6 +18,13 @@ class Admin::AnalyticsController < Admin::BaseController
                              .limit(10)
                              .count
 
+    @top_sources = PageView.last_30
+                           .where.not(source: [ nil, "" ])
+                           .group(:source)
+                           .order("count_all DESC")
+                           .limit(10)
+                           .count
+
     @recent = PageView.order(created_at: :desc).limit(20).includes(visitor: :whitelisted_ip)
 
     respond_to do |format|

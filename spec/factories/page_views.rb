@@ -7,5 +7,9 @@ FactoryBot.define do
     user_agent { "Mozilla/5.0" }
     trace_id   { SecureRandom.hex(8) }
     created_at { Time.current }
+
+    trait :with_source do
+      source { "linkedin" }
+    end
   end
 end
