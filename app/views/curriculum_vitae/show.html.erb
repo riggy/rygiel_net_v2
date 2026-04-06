@@ -1,0 +1,29 @@
+<% content_for :title, "CV — Krzysztof Rygielski" %>
+<% content_for :description, "Curriculum Vitae of Krzysztof Rygielski, software developer." %>
+
+<div class="pt-32 pb-14 border-b border-border">
+  <div class="max-w-[1100px] mx-auto px-6">
+    <div class="flex items-baseline justify-between max-w-[760px]">
+      <h1 class="text-3xl font-bold tracking-tight">Curriculum Vitae</h1>
+      <% if @curriculum_vitae.present? %>
+        <div class="flex items-center gap-4">
+          <% if @curriculum_vitae.updated_at %>
+            <span class="text-subtle text-[0.8125rem]">Updated <%= @curriculum_vitae.updated_at %></span>
+          <% end %>
+          <%= link_to "Download PDF →", cv_path(format: :pdf),
+              class: "inline-flex items-center px-3.5 py-1.5 rounded text-[0.8125rem] font-medium transition-all duration-150 bg-transparent text-surface border border-border-hover hover:border-muted no-underline" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-[1100px] mx-auto px-6 py-14">
+  <% if @curriculum_vitae.present? %>
+    <div class="post-body max-w-[760px]">
+      <%= @curriculum_vitae.content %>
+    </div>
+  <% else %>
+    <p class="text-subtle text-[0.9375rem] py-20">CV coming soon.</p>
+  <% end %>
+</div>
