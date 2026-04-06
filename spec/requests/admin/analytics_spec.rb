@@ -18,7 +18,7 @@ RSpec.describe "Admin::Analytics", type: :request do
       expect(response).to have_http_status(:unauthorized)
     end
 
-    it "returns totals, top_pages, top_referrers and recent page views" do
+    it "returns totals, top_pages, top_referrers, top_sources and recent page views" do
       visitor = create(:visitor, ip: "1.2.3.4")
       create(:page_view, visitor: visitor, path: "/", referer: "https://google.com")
 
@@ -26,8 +26,18 @@ RSpec.describe "Admin::Analytics", type: :request do
 
       expect(response).to have_http_status(:ok)
       data = JSON.parse(response.body)
-      expect(data).to include("totals", "top_pages", "top_referrers", "recent")
+      expect(data).to include("totals", "top_pages", "top_referrers", "top_sources", "recent")
       expect(data["totals"]).to include("today", "week", "month")
+    end
+
+    it "includes source in top_sources when page views have a source" do
+      visitor = create(:visitor, ip: "1.2.3.4")
+      create(:page_view, :with_source, visitor: visitor)
+
+      get "/admin/analytics", headers: auth_headers.merge("Accept" => "application/json")
+
+      data = JSON.parse(response.body)
+      expect(data["top_sources"]).to include("linkedin" => 1)
     end
 
     it "includes flagging info in recent page views" do

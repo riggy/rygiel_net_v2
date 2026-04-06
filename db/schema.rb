@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_06_155635) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_07_000001) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -92,11 +92,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_155635) do
     t.string "path", null: false
     t.string "referer"
     t.string "session_id"
+    t.string "source"
     t.string "trace_id"
     t.string "user_agent"
     t.integer "visitor_id"
     t.index ["created_at"], name: "index_page_views_on_created_at"
     t.index ["path"], name: "index_page_views_on_path"
+    t.index ["source"], name: "index_page_views_on_source"
     t.index ["visitor_id"], name: "index_page_views_on_visitor_id"
   end
 
@@ -118,6 +120,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_155635) do
     t.string "tech_tags"
     t.datetime "updated_at", null: false
     t.string "url"
+  end
+
+  create_table "referral_links", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.integer "clicks", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.string "target_path", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_referral_links_on_active"
+    t.index ["slug"], name: "index_referral_links_on_slug", unique: true
   end
 
   create_table "site_configs", force: :cascade do |t|

@@ -1,0 +1,43 @@
+<% if referral_link.errors.any? %>
+  <div class="bg-red-500/8 border border-red-500/20 text-red-400 px-4 py-3 rounded text-sm mb-6">
+    <strong><%= referral_link.errors.count %> <%= "error".pluralize(referral_link.errors.count) %> prevented saving:</strong>
+    <ul class="mt-1.5 ml-4">
+      <% referral_link.errors.full_messages.each do |msg| %>
+        <li class="mb-1"><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: [ :admin, referral_link ], class: "max-w-[760px]" do |f| %>
+  <div class="mb-5">
+    <%= f.label :name, class: "block text-[0.8125rem] font-medium text-muted mb-2" %>
+    <%= f.text_field :name, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none", autofocus: true, placeholder: "e.g. LinkedIn Profile" %>
+  </div>
+
+  <div class="mb-5">
+    <%= f.label :slug, class: "block text-[0.8125rem] font-medium text-muted mb-2" do %>
+      Slug <span class="text-subtle font-normal ml-1">(used in /go/&lt;slug&gt;)</span>
+    <% end %>
+    <%= f.text_field :slug, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none font-mono", placeholder: "e.g. linkedin-cv" %>
+  </div>
+
+  <div class="mb-5">
+    <%= f.label :target_path, class: "block text-[0.8125rem] font-medium text-muted mb-2" do %>
+      Target path <span class="text-subtle font-normal ml-1">(must start with /)</span>
+    <% end %>
+    <%= f.text_field :target_path, class: "w-full bg-card border border-border rounded text-surface font-sans text-sm px-3.5 py-2.5 transition-colors focus:border-accent outline-none font-mono", placeholder: "e.g. /cv" %>
+  </div>
+
+  <div class="mb-5">
+    <div class="flex items-center gap-2.5">
+      <%= f.check_box :active, class: "w-4 h-4 accent-accent cursor-pointer" %>
+      <%= f.label :active, "Active", class: "block text-[0.8125rem] font-medium text-muted" %>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-3 mt-7 pt-7 border-t border-border">
+    <%= f.submit referral_link.persisted? ? "Save changes" : "Create link", class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-accent text-white border border-accent hover:bg-accent-hover hover:border-accent-hover cursor-pointer" %>
+    <%= link_to "Cancel", admin_referral_links_path, class: "inline-flex items-center px-5 py-2.5 rounded text-sm font-medium transition-all duration-150 bg-transparent text-surface border border-border-hover hover:border-muted" %>
+  </div>
+<% end %>

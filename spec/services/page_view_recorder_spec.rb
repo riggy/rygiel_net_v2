@@ -17,14 +17,15 @@ RSpec.describe PageViewRecorder do
   it "enqueues TrackPageViewJob with correct args for valid page view" do
     expect {
       call
-    }.to have_enqueued_job(TrackPageViewJob).with({
+    }.to have_enqueued_job(TrackPageViewJob).with(hash_including(
       path:       "/blog",
       ip:         "1.2.3.4",
       user_agent: "Mozilla/5.0",
       referer:    "https://example.com",
       session_id: "abc123",
-      trace_id:   "trace-xyz"
-    })
+      trace_id:   "trace-xyz",
+      source:     nil
+    ))
   end
 
   it "does not enqueue job for Googlebot" do
@@ -55,5 +56,23 @@ RSpec.describe PageViewRecorder do
     expect {
       call(path: nil)
     }.not_to have_enqueued_job
+  end
+
+  it "passes source to TrackPageViewJob when provided" do
+    expect {
+      call(source: "linkedin")
+    }.to have_enqueued_job(TrackPageViewJob).with(hash_including(source: "linkedin"))
+  end
+
+  it "passes nil source when not provided" do
+    expect {
+      call
+    }.to have_enqueued_job(TrackPageViewJob).with(hash_including(source: nil))
+  end
+
+  it "normalizes blank source to nil" do
+    expect {
+      call(source: "   ")
+    }.to have_enqueued_job(TrackPageViewJob).with(hash_including(source: nil))
   end
 end

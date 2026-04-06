@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
+  get "/go/:slug", to: "referral_links#show", as: :referral_link
+
   post "/page_views", to: "page_views#create"
 
   resources :conversations, only: [ :new, :create, :show ] do
@@ -31,6 +33,7 @@ Rails.application.routes.draw do
       delete :unflag_visitor
     end
     resources :whitelisted_ips, only: :create
+    resources :referral_links
     resource :curriculum_vitae, only: %i[edit update], controller: "curriculum_vitae"
     get :emojis, to: "emojis#index"
   end
