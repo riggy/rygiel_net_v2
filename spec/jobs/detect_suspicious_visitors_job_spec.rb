@@ -135,7 +135,7 @@ RSpec.describe DetectSuspiciousVisitorsJob, type: :job do
 
   it "skips flagging a visitor with an active whitelist entry" do
     v = create(:visitor)
-    create(:whitelisted_ip, ip: v.ip)
+    create(:whitelisted_ip, ip: v.ip, visitor: v)
     create_list(:page_view, 50, visitor: v)
     run_job
     expect(v.reload.flagged_at).to be_nil
@@ -143,7 +143,7 @@ RSpec.describe DetectSuspiciousVisitorsJob, type: :job do
 
   it "flags a visitor whose whitelist entry has expired" do
     v = create(:visitor)
-    create(:whitelisted_ip, :expired, ip: v.ip)
+    create(:whitelisted_ip, :expired, ip: v.ip, visitor: v)
     create_list(:page_view, 50, visitor: v)
     run_job
     expect(v.reload.flagged_at).not_to be_nil

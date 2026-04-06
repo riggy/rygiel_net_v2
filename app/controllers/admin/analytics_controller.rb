@@ -18,7 +18,7 @@ class Admin::AnalyticsController < Admin::BaseController
                              .limit(10)
                              .count
 
-    @recent = PageView.order(created_at: :desc).limit(20).includes(:visitor)
+    @recent = PageView.order(created_at: :desc).limit(20).includes(visitor: :whitelisted_ip)
 
     respond_to do |format|
       format.html
