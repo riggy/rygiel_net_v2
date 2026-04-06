@@ -1,0 +1,8 @@
+<% content_for :title, "CV" %>
+
+<div class="flex items-center justify-between mb-7">
+  <h1 class="text-xl font-bold tracking-[-0.02em]">Curriculum Vitae</h1>
+  <%= link_to "View CV →", cv_path, class: "text-muted text-[0.8125rem] no-underline hover:text-surface transition-colors", target: "_blank" %>
+</div>
+
+<%= render "form", curriculum_vitae: @curriculum_vitae %>

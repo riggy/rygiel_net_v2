@@ -9,6 +9,9 @@ Rails.application.routes.draw do
 
   root "pages#home"
 
+  get "/cv", to: "curriculum_vitae#show", as: :cv
+  get "/cv/print", to: "curriculum_vitae#print", as: :cv_print
+
   get "/blog", to: "blog#index", as: :blog
   get "/blog/:id", to: "blog#show", as: :blog_post
 
@@ -28,6 +31,7 @@ Rails.application.routes.draw do
       delete :unflag_visitor
     end
     resources :whitelisted_ips, only: :create
+    resource :curriculum_vitae, only: %i[edit update], controller: "curriculum_vitae"
     get :emojis, to: "emojis#index"
   end
 end
