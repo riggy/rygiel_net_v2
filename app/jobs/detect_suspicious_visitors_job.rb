@@ -17,12 +17,14 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
   def perform
     recent_cutoff = 24.hours.ago
 
+    flag_shared_trace_id_visitors(recent_cutoff)
+
     views_by_visitor = PageView
                         .where(created_at: recent_cutoff..)
                         .joins(:visitor)
                         .merge(Visitor.unflagged)
                         .preload(visitor: :whitelisted_ip)
-                        .select(:visitor_id, :session_id, :referer, :path)
+                        .select(:visitor_id, :session_id, :referer, :path, :trace_id)
                         .group_by(&:visitor)
 
     return if views_by_visitor.empty?
@@ -72,6 +74,28 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
     return if score < FLAG_SCORE_THRESHOLD
 
     flag!(visitor, reasons.join("; "))
+  end
+
+  def flag_shared_trace_id_visitors(cutoff)
+    shared = PageView
+               .where(created_at: cutoff..)
+               .where.not(trace_id: nil)
+               .group(:trace_id)
+               .having("COUNT(DISTINCT visitor_id) > 1")
+               .pluck(:trace_id)
+
+    return if shared.empty?
+
+    Visitor
+      .unflagged
+      .joins("LEFT OUTER JOIN whitelisted_ips wi ON wi.visitor_id = visitors.id")
+      .joins(:page_views)
+      .where(page_views: { trace_id: shared, created_at: cutoff.. })
+      .where("wi.id IS NULL OR wi.expires_at <= ?", Time.current)
+      .distinct
+      .each do |visitor|
+        flag!(visitor, "trace_id shared across multiple visitors (cross-visitor bot detected)")
+      end
   end
 
   def flag!(visitor, reason)
