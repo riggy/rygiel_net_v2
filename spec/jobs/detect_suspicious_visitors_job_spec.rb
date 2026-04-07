@@ -149,6 +149,91 @@ RSpec.describe DetectSuspiciousVisitorsJob, type: :job do
     expect(v.reload.flagged_at).not_to be_nil
   end
 
+  # --- cross-visitor trace_id sharing ---
+
+  context "cross-visitor trace_id sharing" do
+    let(:shared_trace_id) { SecureRandom.hex(8) }
+    let(:v1) { create(:visitor) }
+    let(:v2) { create(:visitor) }
+    let!(:pv1) { create(:page_view, visitor: v1, trace_id: shared_trace_id) }
+    let!(:pv2) { create(:page_view, visitor: v2, trace_id: shared_trace_id) }
+
+    it "flags both visitors" do
+      run_job
+      expect(v1.reload.flagged_at).not_to be_nil
+      expect(v2.reload.flagged_at).not_to be_nil
+    end
+
+    it "sets a descriptive flag_reason" do
+      run_job
+      v1.reload
+      expect(v1.flag_reason).to include("trace_id shared across multiple visitors")
+      expect(v1.flagged_by).to eq("DetectSuspiciousVisitorsJob")
+    end
+
+    context "when v1 is already flagged" do
+      let(:v1) { create(:visitor, flagged_at: 1.hour.ago, flag_reason: "prior reason", flagged_by: "manual") }
+
+      it "does not overwrite the existing flag_reason" do
+        run_job
+        expect(v1.reload.flag_reason).to eq("prior reason")
+      end
+    end
+
+    context "when v1 is whitelisted" do
+      let!(:whitelist) { create(:whitelisted_ip, ip: v1.ip, visitor: v1) }
+
+      it "skips v1 but still flags the partner" do
+        run_job
+        expect(v1.reload.flagged_at).to be_nil
+        expect(v2.reload.flagged_at).not_to be_nil
+      end
+    end
+
+    context "when trace_ids are unique per visitor" do
+      let!(:pv1) { create(:page_view, visitor: v1, trace_id: SecureRandom.hex(8)) }
+      let!(:pv2) { create(:page_view, visitor: v2, trace_id: SecureRandom.hex(8)) }
+
+      it "does not flag either visitor" do
+        run_job
+        expect(v1.reload.flagged_at).to be_nil
+        expect(v2.reload.flagged_at).to be_nil
+      end
+    end
+
+    context "when page views are older than 24h" do
+      let!(:pv1) { create(:page_view, visitor: v1, trace_id: shared_trace_id, created_at: 25.hours.ago) }
+      let!(:pv2) { create(:page_view, visitor: v2, trace_id: shared_trace_id, created_at: 25.hours.ago) }
+
+      it "ignores the shared trace_id" do
+        run_job
+        expect(v1.reload.flagged_at).to be_nil
+        expect(v2.reload.flagged_at).to be_nil
+      end
+    end
+
+    context "when trace_ids are nil" do
+      let!(:pv1) { create(:page_view, visitor: v1, trace_id: nil) }
+      let!(:pv2) { create(:page_view, visitor: v2, trace_id: nil) }
+
+      it "does not flag either visitor" do
+        run_job
+        expect(v1.reload.flagged_at).to be_nil
+        expect(v2.reload.flagged_at).to be_nil
+      end
+    end
+
+    context "when three visitors share a trace_id" do
+      let(:v3) { create(:visitor) }
+      let!(:pv3) { create(:page_view, visitor: v3, trace_id: shared_trace_id) }
+
+      it "flags all three" do
+        run_job
+        [ v1, v2, v3 ].each { |v| expect(v.reload.flagged_at).not_to be_nil }
+      end
+    end
+  end
+
   # --- no-op when nothing to process ---
 
   it "completes without error when no unflagged visitors exist" do
