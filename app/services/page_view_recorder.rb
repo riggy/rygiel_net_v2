@@ -1,7 +1,7 @@
 class PageViewRecorder < ApplicationService
   BOT_REGEX = /Googlebot|Bingbot|Slurp|DuckDuckBot|Baidu|YandexBot|facebookexternalhit|Twitterbot|LinkedInBot|curl|wget|python-requests|python-urllib|Go-http-client|libwww|Java|Ruby|bot|crawl|spider/i
 
-  def initialize(path:, ip:, user_agent:, referer:, session_id:, trace_id:, source: nil)
+  def initialize(path:, ip:, user_agent:, referer:, session_id:, trace_id:, source: nil, initial: false)
     @path       = path.to_s
     @ip         = ip
     @user_agent = user_agent.to_s
@@ -9,6 +9,7 @@ class PageViewRecorder < ApplicationService
     @session_id = session_id
     @trace_id   = trace_id
     @source     = source.presence
+    @initial    = initial
   end
 
   def call
@@ -22,7 +23,8 @@ class PageViewRecorder < ApplicationService
       referer:    @referer,
       session_id: @session_id,
       trace_id:   @trace_id,
-      source:     @source
+      source:     @source,
+      initial:    @initial
     )
   end
 end
