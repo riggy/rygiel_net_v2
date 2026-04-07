@@ -3,7 +3,7 @@
 
 <div class="pt-32 pb-14 border-b border-border">
   <div class="max-w-[1100px] mx-auto px-6">
-    <div class="flex items-baseline justify-between max-w-[760px]">
+    <div class="flex items-baseline justify-between max-w-[1100px]">
       <h1 class="text-3xl font-bold tracking-tight">Curriculum Vitae</h1>
       <% if @curriculum_vitae.present? %>
         <div class="flex items-center gap-4">
@@ -20,7 +20,7 @@
 
 <div class="max-w-[1100px] mx-auto px-6 py-14">
   <% if @curriculum_vitae.present? %>
-    <div class="post-body max-w-[760px]">
+    <div class="post-body max-w-[1100px]">
       <%= @curriculum_vitae.content %>
     </div>
   <% else %>
