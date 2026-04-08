@@ -6,7 +6,7 @@ class Admin::BlockedUserAgentsController < Admin::BaseController
   end
 
   def create
-    record = BlockedUserAgent.find_or_create_by!(pattern: params.fetch(:user_agent))
+    record = BlockedUserAgent.find_or_create_by!(pattern: params.fetch(:pattern))
     Rails.cache.delete("blocked_user_agent_patterns")
     render json: { status: "ok", pattern: record.pattern }
   rescue ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
