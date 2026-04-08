@@ -1,61 +1,11 @@
 Rack::Attack.blocklist("block known scanners") do |request|
-  bad_agents = [
-    # Generic scanners & vulnerability tools
-    "masscan",
-    "zgrab",
-    "nmap",
-    "nikto",
-    "sqlmap",
-    "nuclei",
-    "gobuster",
-    "dirbuster",
-    "wfuzz",
-    "ffuf",
-    "burpsuite",
-    "acunetix",
-    "nessus",
-    "openvas",
-    "w3af",
-    "skipfish",
-    "arachni",
-    # Search engine crawlers (block indexing bots)
-    "googleother",
-    "googlebot",
-    "bingbot",
-    # SEO & data harvesting bots
-    "semrushbot",
-    "ahrefsbot",
-    "mj12bot",
-    "dotbot",
-    "blexbot",
-    "petalbot",
-    "bytespider",
-    "claudebot",
-    "gptbot",
-    "ccbot",
-    # Headless/automation browsers
-    "headlesschrome",
-    "phantomjs",
-    # Generic scraper/crawler signals
-    "scrapy",
-    "python-requests",
-    "go-http-client",
-    "okhttp",
-    "curl/",
-    "wget/",
-    # Old/legacy clients
-    "konqueror/4",
-    "jakarta",
-    "java/",
-    # Other
-    "fasthttp",
-    "palo alto",
-    "cortex xpanse"
-  ]
+  patterns = Rails.cache.fetch("blocked_user_agent_patterns", expires_in: 10.minutes) do
+    BlockedUserAgent.pluck(:pattern)
+  end
 
   user_agent = request.user_agent.to_s.downcase
   user_agent.empty? ||
-    bad_agents.any? { |pattern| user_agent.include?(pattern) } ||
+    patterns.any? { |p| user_agent.include?(p) } ||
     user_agent.strip == "mozilla/5.0"
 end
 
