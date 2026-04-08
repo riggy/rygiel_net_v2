@@ -123,7 +123,7 @@ RSpec.describe DetectSuspiciousVisitorsJob, type: :job do
 
   it "flag_reason describes triggered signals" do
     v = create(:visitor)
-    create_list(:page_view, 10, visitor: v, path: "/", session_id: nil, referer: nil)
+    create_list(:page_view, 10, visitor: v, path: "/about", session_id: nil, referer: nil)
     run_job
     v.reload
     expect(v.flagged_at).not_to be_nil
@@ -232,6 +232,73 @@ RSpec.describe DetectSuspiciousVisitorsJob, type: :job do
         [ v1, v2, v3 ].each { |v| expect(v.reload.flagged_at).not_to be_nil }
       end
     end
+  end
+
+  # --- UA: blank or minimal ---
+
+  it "flags visitor with blank user_agent" do
+    v = create(:visitor, user_agent: "")
+    create(:page_view, visitor: v)
+    run_job
+    v.reload
+    expect(v.flagged_at).not_to be_nil
+    expect(v.flag_reason).to eq("blank or minimal user-agent")
+  end
+
+  it "flags visitor with nil user_agent" do
+    v = create(:visitor, user_agent: nil)
+    create(:page_view, visitor: v)
+    run_job
+    expect(v.reload.flagged_at).not_to be_nil
+  end
+
+  it "flags visitor with user_agent shorter than 10 chars" do
+    v = create(:visitor, user_agent: "curl")
+    create(:page_view, visitor: v)
+    run_job
+    v.reload
+    expect(v.flagged_at).not_to be_nil
+    expect(v.flag_reason).to eq("blank or minimal user-agent")
+  end
+
+  it "does not flag visitor with a normal browser user_agent" do
+    v = create(:visitor, user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+    create(:page_view, visitor: v)
+    run_job
+    expect(v.reload.flagged_at).to be_nil
+  end
+
+  # --- structural: no session, no referrer, single root hit ---
+
+  it "flags visitor whose only visit is / with no session and no referrer" do
+    v = create(:visitor)
+    create(:page_view, visitor: v, path: "/", session_id: nil, referer: nil)
+    run_job
+    v.reload
+    expect(v.flagged_at).not_to be_nil
+    expect(v.flag_reason).to eq("no session, no referrer, single root hit")
+  end
+
+  it "flags visitor with multiple root-only views all missing session and referrer" do
+    v = create(:visitor)
+    create_list(:page_view, 2, visitor: v, path: "/", session_id: nil, referer: nil)
+    run_job
+    expect(v.reload.flagged_at).not_to be_nil
+  end
+
+  it "does not flag visitor who hits / with a session present" do
+    v = create(:visitor)
+    create(:page_view, visitor: v, path: "/", session_id: "abc123", referer: nil)
+    run_job
+    expect(v.reload.flagged_at).to be_nil
+  end
+
+  it "does not flag visitor who visits / and another path (mixed)" do
+    v = create(:visitor)
+    create(:page_view, visitor: v, path: "/", session_id: nil, referer: nil)
+    create(:page_view, visitor: v, path: "/about", session_id: "abc123", referer: nil)
+    run_job
+    expect(v.reload.flagged_at).to be_nil
   end
 
   # --- no-op when nothing to process ---

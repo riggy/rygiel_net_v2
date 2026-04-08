@@ -18,6 +18,10 @@ Rack::Attack.blocklist("block known scanners") do |request|
     "w3af",
     "skipfish",
     "arachni",
+    # Search engine crawlers (block indexing bots)
+    "googleother",
+    "googlebot",
+    "bingbot",
     # SEO & data harvesting bots
     "semrushbot",
     "ahrefsbot",
@@ -29,19 +33,30 @@ Rack::Attack.blocklist("block known scanners") do |request|
     "claudebot",
     "gptbot",
     "ccbot",
+    # Headless/automation browsers
+    "headlesschrome",
+    "phantomjs",
     # Generic scraper/crawler signals
     "scrapy",
     "python-requests",
     "go-http-client",
+    "okhttp",
     "curl/",
     "wget/",
+    # Old/legacy clients
+    "konqueror/4",
+    "jakarta",
+    "java/",
     # Other
     "fasthttp",
-    "palo alto"
+    "palo alto",
+    "cortex xpanse"
   ]
 
   user_agent = request.user_agent.to_s.downcase
-  user_agent.empty? || bad_agents.any? { |pattern| user_agent.include?(pattern) }
+  user_agent.empty? ||
+    bad_agents.any? { |pattern| user_agent.include?(pattern) } ||
+    user_agent.strip == "mozilla/5.0"
 end
 
 Rack::Attack.safelist("allow local/dev") do |req|
