@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       delete :unflag_visitor
     end
     resources :whitelisted_ips, only: :create
+    resources :blocked_user_agents, only: %i[index create]
     resources :referral_links
     resource :curriculum_vitae, only: %i[edit update], controller: "curriculum_vitae"
     get :emojis, to: "emojis#index"
