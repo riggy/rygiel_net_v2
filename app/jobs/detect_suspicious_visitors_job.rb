@@ -46,6 +46,16 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
       return
     end
 
+    if (reason = ua_flag_reason(visitor.user_agent))
+      flag!(visitor, reason)
+      return
+    end
+
+    if views.all? { |pv| pv.session_id.nil? && pv.referer.nil? && pv.path == "/" }
+      flag!(visitor, "no session, no referrer, single root hit")
+      return
+    end
+
     # Don't flag casual visitors with very few views — on a single-page site,
     # legitimate users naturally hit only "/" once or twice.
     return if count < MIN_VIEWS
@@ -96,6 +106,10 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
       .each do |visitor|
         flag!(visitor, "trace_id shared across multiple visitors (cross-visitor bot detected)")
       end
+  end
+
+  def ua_flag_reason(user_agent)
+    "blank or minimal user-agent" if user_agent.blank? || user_agent.to_s.length < 10
   end
 
   def flag!(visitor, reason)
