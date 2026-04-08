@@ -43,7 +43,7 @@ RSpec.describe "Admin::BlockedUserAgents", type: :request do
       Rails.cache.write("blocked_user_agent_patterns", [])
 
       post "/admin/blocked_user_agents",
-        params: { user_agent: "evilbot/1.0" },
+        params: { pattern: "evilbot/1.0" },
         headers: auth_headers
 
       expect(response).to have_http_status(:ok)
@@ -59,14 +59,14 @@ RSpec.describe "Admin::BlockedUserAgents", type: :request do
       BlockedUserAgent.create!(pattern: "evilbot/1.0")
 
       post "/admin/blocked_user_agents",
-        params: { user_agent: "evilbot/1.0" },
+        params: { pattern: "evilbot/1.0" },
         headers: auth_headers
 
       expect(response).to have_http_status(:ok)
       expect(BlockedUserAgent.where(pattern: "evilbot/1.0").count).to eq(1)
     end
 
-    it "returns 422 when user_agent param is missing" do
+    it "returns 422 when pattern param is missing" do
       post "/admin/blocked_user_agents",
         params: {},
         headers: auth_headers
@@ -76,7 +76,7 @@ RSpec.describe "Admin::BlockedUserAgents", type: :request do
     end
 
     it "requires authentication" do
-      post "/admin/blocked_user_agents", params: { user_agent: "evilbot/1.0" }
+      post "/admin/blocked_user_agents", params: { pattern: "evilbot/1.0" }
 
       expect(response).to have_http_status(:unauthorized)
     end
