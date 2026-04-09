@@ -1,5 +1,5 @@
 PATH
-  remote: gems/trackguard
+  remote: ../trackguard
   specs:
     trackguard (0.1.0)
       rails (>= 8.1)
