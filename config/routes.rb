@@ -3,8 +3,6 @@ Rails.application.routes.draw do
 
   get "/go/:slug", to: "referral_links#show", as: :referral_link
 
-  post "/page_views", to: "page_views#create"
-
   resources :conversations, only: [ :new, :create, :show ] do
     resources :messages, only: [ :create ], module: :conversations
   end
