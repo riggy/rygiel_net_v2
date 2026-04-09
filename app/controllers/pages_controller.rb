@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  after_action :track_page_view
+  track_page_views
   def home
     @projects = Project.featured.positioned
     @posts = Post.published.limit(3)
