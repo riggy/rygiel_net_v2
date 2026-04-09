@@ -9,7 +9,6 @@ class PurgeStaleTrackingDataJob < ApplicationJob
     Trackguard::PageView.where(created_at: ..cutoff).delete_all
 
     stale_visitor_ids = Trackguard::Visitor
-                          .unflagged
                           .where(last_seen_at: ..cutoff)
                           .where.not(
                             id: Trackguard::PageView.select(:visitor_id)
