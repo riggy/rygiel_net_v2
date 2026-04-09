@@ -1,5 +1,5 @@
 class WhitelistedIp < ApplicationRecord
-  belongs_to :visitor, optional: true
+  belongs_to :visitor, class_name: "Trackguard::Visitor", optional: true
 
   validates :ip, presence: true, uniqueness: true
   validates :expires_at, presence: true

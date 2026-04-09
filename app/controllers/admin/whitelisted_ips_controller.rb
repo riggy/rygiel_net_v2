@@ -3,7 +3,7 @@ class Admin::WhitelistedIpsController < Admin::BaseController
 
   def create
     record = WhitelistedIp.find_or_initialize_by(ip: params.fetch(:ip))
-    record.visitor    = Visitor.find_by(ip: record.ip)
+    record.visitor    = Trackguard::Visitor.find_by(ip: record.ip)
     record.expires_at = params.fetch(:expires_at, 7.days.from_now)
     record.save!
     Rails.cache.delete("whitelisted_ips")
