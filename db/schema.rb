@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_08_155740) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_09_205048) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -94,21 +94,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_08_155740) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "page_views", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "path", null: false
-    t.string "referer"
-    t.string "session_id"
-    t.string "source"
-    t.string "trace_id"
-    t.string "user_agent"
-    t.integer "visitor_id"
-    t.index ["created_at"], name: "index_page_views_on_created_at"
-    t.index ["path"], name: "index_page_views_on_path"
-    t.index ["source"], name: "index_page_views_on_source"
-    t.index ["visitor_id"], name: "index_page_views_on_visitor_id"
-  end
-
   create_table "posts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -148,12 +133,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_08_155740) do
     t.text "value"
   end
 
-  create_table "uploads", force: :cascade do |t|
+  create_table "trackguard_page_views", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "path", null: false
+    t.string "referer"
+    t.string "session_id"
+    t.string "source"
+    t.string "trace_id"
+    t.string "user_agent"
+    t.integer "visitor_id"
+    t.index ["created_at"], name: "index_trackguard_page_views_on_created_at"
+    t.index ["path"], name: "index_trackguard_page_views_on_path"
+    t.index ["source"], name: "index_trackguard_page_views_on_source"
+    t.index ["visitor_id"], name: "index_trackguard_page_views_on_visitor_id"
   end
 
-  create_table "visitors", force: :cascade do |t|
+  create_table "trackguard_visitors", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "first_seen_at", null: false
     t.string "flag_reason"
@@ -163,7 +158,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_08_155740) do
     t.datetime "last_seen_at", null: false
     t.datetime "updated_at", null: false
     t.string "user_agent"
-    t.index ["ip"], name: "index_visitors_on_ip", unique: true
+    t.index ["ip"], name: "index_trackguard_visitors_on_ip", unique: true
+  end
+
+  create_table "uploads", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "whitelisted_ips", force: :cascade do |t|
@@ -179,8 +179,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_08_155740) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "conversations", "visitors"
+  add_foreign_key "conversations", "trackguard_visitors", column: "visitor_id"
   add_foreign_key "messages", "conversations"
-  add_foreign_key "page_views", "visitors"
-  add_foreign_key "whitelisted_ips", "visitors"
+  add_foreign_key "trackguard_page_views", "trackguard_visitors", column: "visitor_id"
+  add_foreign_key "whitelisted_ips", "trackguard_visitors", column: "visitor_id"
 end

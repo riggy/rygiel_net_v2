@@ -19,10 +19,10 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
 
     flag_shared_trace_id_visitors(recent_cutoff)
 
-    views_by_visitor = PageView
+    views_by_visitor = Trackguard::PageView
                         .where(created_at: recent_cutoff..)
                         .joins(:visitor)
-                        .merge(Visitor.unflagged)
+                        .merge(Trackguard::Visitor.unflagged)
                         .preload(visitor: :whitelisted_ip)
                         .select(:visitor_id, :session_id, :referer, :path, :trace_id)
                         .group_by(&:visitor)
@@ -87,7 +87,7 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
   end
 
   def flag_shared_trace_id_visitors(cutoff)
-    shared = PageView
+    shared = Trackguard::PageView
                .where(created_at: cutoff..)
                .where.not(trace_id: nil)
                .group(:trace_id)
@@ -96,11 +96,11 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
 
     return if shared.empty?
 
-    Visitor
+    Trackguard::Visitor
       .unflagged
-      .joins("LEFT OUTER JOIN whitelisted_ips wi ON wi.visitor_id = visitors.id")
+      .joins("LEFT OUTER JOIN whitelisted_ips wi ON wi.visitor_id = trackguard_visitors.id")
       .joins(:page_views)
-      .where(page_views: { trace_id: shared, created_at: cutoff.. })
+      .where(trackguard_page_views: { trace_id: shared, created_at: cutoff.. })
       .where("wi.id IS NULL OR wi.expires_at <= ?", Time.current)
       .distinct
       .each do |visitor|

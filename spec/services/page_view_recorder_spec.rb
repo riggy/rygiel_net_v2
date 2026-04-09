@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe PageViewRecorder do
+RSpec.describe Trackguard::PageViewRecorder do
   DEFAULT_PARAMS = {
     path:       "/blog",
     ip:         "1.2.3.4",
@@ -11,13 +11,13 @@ RSpec.describe PageViewRecorder do
   }.freeze
 
   def call(**overrides)
-    PageViewRecorder.call(**DEFAULT_PARAMS.merge(overrides))
+    Trackguard::PageViewRecorder.call(**DEFAULT_PARAMS.merge(overrides))
   end
 
-  it "enqueues TrackPageViewJob with correct args for valid page view" do
+  it "enqueues Trackguard::TrackPageViewJob with correct args for valid page view" do
     expect {
       call
-    }.to have_enqueued_job(TrackPageViewJob).with(hash_including(
+    }.to have_enqueued_job(Trackguard::TrackPageViewJob).with(hash_including(
       path:       "/blog",
       ip:         "1.2.3.4",
       user_agent: "Mozilla/5.0",
@@ -58,21 +58,21 @@ RSpec.describe PageViewRecorder do
     }.not_to have_enqueued_job
   end
 
-  it "passes source to TrackPageViewJob when provided" do
+  it "passes source to Trackguard::TrackPageViewJob when provided" do
     expect {
       call(source: "linkedin")
-    }.to have_enqueued_job(TrackPageViewJob).with(hash_including(source: "linkedin"))
+    }.to have_enqueued_job(Trackguard::TrackPageViewJob).with(hash_including(source: "linkedin"))
   end
 
   it "passes nil source when not provided" do
     expect {
       call
-    }.to have_enqueued_job(TrackPageViewJob).with(hash_including(source: nil))
+    }.to have_enqueued_job(Trackguard::TrackPageViewJob).with(hash_including(source: nil))
   end
 
   it "normalizes blank source to nil" do
     expect {
       call(source: "   ")
-    }.to have_enqueued_job(TrackPageViewJob).with(hash_including(source: nil))
+    }.to have_enqueued_job(Trackguard::TrackPageViewJob).with(hash_including(source: nil))
   end
 end

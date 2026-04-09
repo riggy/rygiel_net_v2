@@ -1,5 +1,5 @@
 class Conversation < ApplicationRecord
-  belongs_to :visitor, optional: true
+  belongs_to :visitor, class_name: "Trackguard::Visitor", optional: true
   has_many :messages, -> { order(:created_at) }, dependent: :destroy
 
   validates :ip, :last_activity_at, presence: true
