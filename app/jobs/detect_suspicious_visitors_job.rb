@@ -51,14 +51,14 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
       return
     end
 
-    if count > 1 && views.all? { |pv| pv.session_id.nil? && pv.referer.nil? && pv.path == "/" }
-      flag!(visitor, "no session, no referrer, single root hit")
-      return
-    end
-
     # Don't flag casual visitors with very few views — on a single-page site,
     # legitimate users naturally hit only "/" once or twice.
     return if count < MIN_VIEWS
+
+    if views.all? { |pv| pv.session_id.nil? && pv.referer.nil? && pv.path == "/" }
+      flag!(visitor, "no session, no referrer, single root hit")
+      return
+    end
 
     score   = 0
     reasons = []

@@ -270,16 +270,16 @@ RSpec.describe DetectSuspiciousVisitorsJob, type: :job do
 
   # --- structural: no session, no referrer, single root hit ---
 
-  it "does not flag visitor whose only visit is / with no session and no referrer (single hit exemption)" do
+  it "does not flag visitor with fewer than MIN_VIEWS root-only hits (below threshold)" do
     v = create(:visitor)
-    create(:page_view, visitor: v, path: "/", session_id: nil, referer: nil)
+    create_list(:page_view, 2, visitor: v, path: "/", session_id: nil, referer: nil)
     run_job
     expect(v.reload.flagged_at).to be_nil
   end
 
-  it "flags visitor with 2+ root-only views all missing session and referrer" do
+  it "flags visitor with MIN_VIEWS+ root-only views all missing session and referrer" do
     v = create(:visitor)
-    create_list(:page_view, 2, visitor: v, path: "/", session_id: nil, referer: nil)
+    create_list(:page_view, 3, visitor: v, path: "/", session_id: nil, referer: nil)
     run_job
     v.reload
     expect(v.flagged_at).not_to be_nil
