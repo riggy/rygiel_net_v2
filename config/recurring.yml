@@ -18,3 +18,8 @@ production:
     class: DetectSuspiciousVisitorsJob
     queue: default
     schedule: every hour at minute 30
+
+  purge_stale_tracking_data:
+    class: PurgeStaleTrackingDataJob
+    queue: default
+    schedule: every day at 3am
