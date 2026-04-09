@@ -1,7 +1,7 @@
 class BlogController < ApplicationController
   PER_PAGE = 10
 
-  after_action :track_page_view
+  track_page_views
 
   def index
     @page = (params[:page] || 1).to_i
