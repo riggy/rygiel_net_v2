@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :page_view do
+  factory :page_view, class: "Trackguard::PageView" do
     association :visitor
     path       { "/posts/hello" }
     session_id { SecureRandom.hex(8) }

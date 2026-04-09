@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe DetectSuspiciousVisitorsJob, type: :job do
   before do
-    PageView.delete_all
-    Visitor.delete_all
+    Trackguard::PageView.delete_all
+    Trackguard::Visitor.delete_all
   end
 
   def run_job
