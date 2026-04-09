@@ -49,10 +49,10 @@ RSpec.describe PurgeStaleTrackingDataJob, type: :job do
     expect(Trackguard::Visitor.exists?(v.id)).to be true
   end
 
-  it "keeps flagged visitor regardless of last_seen_at" do
+  it "purges flagged visitor with no remaining page_views and stale last_seen_at" do
     v = create(:visitor, :flagged, last_seen_at: CUTOFF - 1.day)
     run_job
-    expect(Trackguard::Visitor.exists?(v.id)).to be true
+    expect(Trackguard::Visitor.exists?(v.id)).to be false
   end
 
   # --- associations ---
