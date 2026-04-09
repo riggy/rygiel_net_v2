@@ -7,7 +7,7 @@ class ConversationsController < ApplicationController
   def create
     @conversation = Conversation.create!(
       ip:               request.remote_ip,
-      visitor:          Visitor.find_by(ip: request.remote_ip),
+      visitor:          Trackguard::Visitor.find_by(ip: request.remote_ip),
       session_id:       Digest::SHA256.hexdigest(session.id.to_s),
       last_activity_at: Time.current
     )
