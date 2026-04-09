@@ -51,7 +51,7 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
       return
     end
 
-    if views.all? { |pv| pv.session_id.nil? && pv.referer.nil? && pv.path == "/" }
+    if count > 1 && views.all? { |pv| pv.session_id.nil? && pv.referer.nil? && pv.path == "/" }
       flag!(visitor, "no session, no referrer, single root hit")
       return
     end
