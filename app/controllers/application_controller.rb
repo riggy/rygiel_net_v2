@@ -6,12 +6,4 @@ class ApplicationController < ActionController::Base
   stale_when_importmap_changes
 
   include Trackguard::PageTracker
-
-  before_action :set_trace_id
-
-  private
-
-  def set_trace_id
-    @trace_id = SecureRandom.uuid
-  end
 end
