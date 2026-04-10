@@ -30,6 +30,9 @@ Rails.application.routes.draw do
       post :flag_visitor
       delete :unflag_visitor
     end
+    namespace :trackguard do
+      resource :dashboard, only: :show
+    end
     resources :whitelisted_ips, only: :create
     resources :blocked_user_agents, only: %i[index create]
     resources :referral_links
