@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Trackguard::Engine, at: "/trackguard", as: :trackguard
+
   get "up" => "rails/health#show", as: :rails_health_check
 
   get "/go/:slug", to: "referral_links#show", as: :referral_link
@@ -29,9 +31,6 @@ Rails.application.routes.draw do
     resource :analytics, only: :show do
       post :flag_visitor
       delete :unflag_visitor
-    end
-    namespace :trackguard do
-      resource :dashboard, only: :show
     end
     resources :whitelisted_ips, only: :create
     resources :blocked_user_agents, only: %i[index create]
