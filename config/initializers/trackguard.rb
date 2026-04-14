@@ -4,4 +4,3 @@ Trackguard.authenticate_admin_with = proc do
       ActiveSupport::SecurityUtils.secure_compare(password, Rails.application.credentials.dig(:admin, :password))
   end
 end
-Trackguard.admin_layout = "admin"
