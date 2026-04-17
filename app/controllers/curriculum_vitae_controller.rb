@@ -5,7 +5,8 @@ class CurriculumVitaeController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        pdf = Grover.new(cv_print_url, format: "A4", print_background: true,
+        local_url = cv_print_url(host: "localhost", port: ENV.fetch("PORT", 3000), protocol: "http")
+        pdf = Grover.new(local_url, format: "A4", print_background: true,
           margin: { top: "1.5cm", right: "2cm", bottom: "1.5cm", left: "2cm" }).to_pdf
         send_data pdf, filename: "cv.pdf", type: "application/pdf", disposition: "inline"
       end
