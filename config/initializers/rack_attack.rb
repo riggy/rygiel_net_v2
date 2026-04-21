@@ -10,7 +10,7 @@ Rack::Attack.blocklist("block known scanners") do |request|
 end
 
 Rack::Attack.safelist("allow local/dev") do |req|
-  req.ip == "127.0.0.1"
+  req.ip == "127.0.0.1" || req.ip == "::1"
 end
 
 Rack::Attack.safelist("allow whitelisted IPs") do |req|
