@@ -1,5 +1,4 @@
 class Admin::AnalyticsController < Admin::BaseController
-  skip_before_action :verify_authenticity_token, only: [ :flag_visitor, :unflag_visitor ]
   def show
     @total_today  = Trackguard::PageView.today.count
     @total_week   = Trackguard::PageView.this_week.count
@@ -33,24 +32,6 @@ class Admin::AnalyticsController < Admin::BaseController
       format.html
       format.json
     end
-  end
-
-  def flag_visitor
-    visitor = Trackguard::Visitor.find_by!(ip: params[:ip])
-    visitor.update!(flagged_at: Time.current, flag_reason: params[:flag_reason], flagged_by: params[:flagged_by])
-    Rails.cache.delete("flagged_ips")
-    render json: { status: "ok", ip: visitor.ip, flagged_at: visitor.flagged_at }, status: :ok
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: "Visitor not found" }, status: :not_found
-  end
-
-  def unflag_visitor
-    visitor = Trackguard::Visitor.find_by!(ip: params[:ip])
-    visitor.update!(flagged_at: nil, flag_reason: nil, flagged_by: nil)
-    Rails.cache.delete("flagged_ips")
-    render json: { status: "ok", ip: visitor.ip }, status: :ok
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: "Visitor not found" }, status: :not_found
   end
 
   private
