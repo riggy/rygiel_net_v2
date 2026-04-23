@@ -83,7 +83,7 @@ RSpec.describe "Admin::Analytics", type: :request do
       Rails.cache.write("flagged_ips", [ "1.2.3.4" ])
 
       post "/admin/analytics/flag_visitor",
-        params: { ip: "1.2.3.4", flag_reason: "spam", flagged_by: "admin" },
+        params: { ip: "1.2.3.4", flag_reason: "spam", flagged_by: "User" },
         headers: auth_headers
 
       expect(response).to have_http_status(:ok)
@@ -97,7 +97,7 @@ RSpec.describe "Admin::Analytics", type: :request do
 
     it "returns 404 for unknown IP" do
       post "/admin/analytics/flag_visitor",
-        params: { ip: "9.9.9.9", flag_reason: "spam", flagged_by: "admin" },
+        params: { ip: "9.9.9.9", flag_reason: "spam", flagged_by: "User" },
         headers: auth_headers
 
       expect(response).to have_http_status(:not_found)

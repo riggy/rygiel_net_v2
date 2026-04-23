@@ -168,11 +168,11 @@ RSpec.describe DetectSuspiciousVisitorsJob, type: :job do
       run_job
       v1.reload
       expect(v1.flag_reason).to include("trace_id shared across multiple visitors")
-      expect(v1.flagged_by).to eq("DetectSuspiciousVisitorsJob")
+      expect(v1.flagged_by).to eq("claw:auto")
     end
 
     context "when v1 is already flagged" do
-      let(:v1) { create(:visitor, flagged_at: 1.hour.ago, flag_reason: "prior reason", flagged_by: "manual") }
+      let(:v1) { create(:visitor, flagged_at: 1.hour.ago, flag_reason: "prior reason", flagged_by: "User") }
 
       it "does not overwrite the existing flag_reason" do
         run_job
