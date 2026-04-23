@@ -8,7 +8,7 @@ FactoryBot.define do
     trait :flagged do
       flagged_at  { Time.current }
       flag_reason { "suspicious activity" }
-      flagged_by  { "system" }
+      flagged_by  { "claw:auto" }
     end
   end
 end

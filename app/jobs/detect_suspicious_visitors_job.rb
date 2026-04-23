@@ -113,7 +113,7 @@ class DetectSuspiciousVisitorsJob < ApplicationJob
   end
 
   def flag!(visitor, reason)
-    visitor.update!(flagged_at: Time.current, flag_reason: reason, flagged_by: "DetectSuspiciousVisitorsJob")
+    visitor.update!(flagged_at: Time.current, flag_reason: reason, flagged_by: "claw:auto")
   end
 
   def blank_ratio(views, attr)
