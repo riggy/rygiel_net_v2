@@ -15,7 +15,7 @@ end
 
 Rack::Attack.safelist("allow whitelisted IPs") do |req|
   Rails.cache.fetch("whitelisted_ips", expires_in: 10.minutes) do
-    WhitelistedIp.active.pluck(:ip)
+    Trackguard::WhitelistedIp.active.pluck(:ip)
   end.include?(req.ip)
 end
 

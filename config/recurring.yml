@@ -15,7 +15,7 @@ production:
     schedule: every hour at minute 12
 
   detect_suspicious_visitors:
-    class: DetectSuspiciousVisitorsJob
+    class: Trackguard::DetectSuspiciousVisitorsJob
     queue: default
     schedule: every hour at minute 30
 

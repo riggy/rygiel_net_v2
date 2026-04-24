@@ -17,7 +17,7 @@ class PurgeStaleTrackingDataJob < ApplicationJob
 
     return if stale_visitor_ids.empty?
 
-    WhitelistedIp.where(visitor_id: stale_visitor_ids).update_all(visitor_id: nil)
+    Trackguard::WhitelistedIp.where(visitor_id: stale_visitor_ids).update_all(visitor_id: nil)
     Conversation.where(visitor_id: stale_visitor_ids).update_all(visitor_id: nil)
     Trackguard::Visitor.where(id: stale_visitor_ids).delete_all
   end
