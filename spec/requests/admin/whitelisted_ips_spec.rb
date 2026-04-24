@@ -25,21 +25,21 @@ RSpec.describe "Admin::WhitelistedIps", type: :request do
       expect(data["ip"]).to eq("1.2.3.4")
       expect(data["expires_at"]).to be_present
 
-      record = WhitelistedIp.find_by!(ip: "1.2.3.4")
+      record = Trackguard::WhitelistedIp.find_by!(ip: "1.2.3.4")
       expect(record.expires_at).to be_within(5.seconds).of(7.days.from_now)
       expect(Rails.cache.read("whitelisted_ips")).to be_nil
     end
 
     it "updates an existing entry (idempotent)" do
-      WhitelistedIp.create!(ip: "1.2.3.4", expires_at: 1.day.from_now)
+      Trackguard::WhitelistedIp.create!(ip: "1.2.3.4", expires_at: 1.day.from_now)
 
       post "/admin/whitelisted_ips",
         params: { ip: "1.2.3.4" },
         headers: auth_headers
 
       expect(response).to have_http_status(:ok)
-      expect(WhitelistedIp.where(ip: "1.2.3.4").count).to eq(1)
-      expect(WhitelistedIp.find_by!(ip: "1.2.3.4").expires_at).to be_within(5.seconds).of(7.days.from_now)
+      expect(Trackguard::WhitelistedIp.where(ip: "1.2.3.4").count).to eq(1)
+      expect(Trackguard::WhitelistedIp.find_by!(ip: "1.2.3.4").expires_at).to be_within(5.seconds).of(7.days.from_now)
     end
 
     it "accepts a custom expires_at" do
@@ -50,7 +50,7 @@ RSpec.describe "Admin::WhitelistedIps", type: :request do
         headers: auth_headers
 
       expect(response).to have_http_status(:ok)
-      record = WhitelistedIp.find_by!(ip: "1.2.3.4")
+      record = Trackguard::WhitelistedIp.find_by!(ip: "1.2.3.4")
       expect(record.expires_at).to be_within(5.seconds).of(30.days.from_now)
     end
 
@@ -68,7 +68,7 @@ RSpec.describe "Admin::WhitelistedIps", type: :request do
         headers: auth_headers
 
       expect(response).to have_http_status(:ok)
-      expect(WhitelistedIp.find_by!(ip: "1.2.3.4").visitor).to eq(visitor)
+      expect(Trackguard::WhitelistedIp.find_by!(ip: "1.2.3.4").visitor).to eq(visitor)
     end
   end
 end
