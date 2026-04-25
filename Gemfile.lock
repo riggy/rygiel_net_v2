@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/riggy/trackguard.git
-  revision: 9ae711bd64596ae85eeb2ac1a0586960ac7dd176
-  tag: v0.9.0
+  revision: 0d55b8038dff7a12747e0686a6a6e2680455d2a4
+  tag: v0.10.0
   specs:
-    trackguard (0.9.0)
+    trackguard (0.10.0)
       rails (>= 8.1)
 
 GEM
@@ -633,7 +633,7 @@ CHECKSUMS
   thruster (0.1.20-arm64-darwin) sha256=630cf8c273f562063b92ea5ccd7a721d7ba6130cc422c823727f4744f6d0770e
   thruster (0.1.20-x86_64-linux) sha256=d579f252bf67aee6ba6d957e48f566b72e019d7657ba2f267a5db1e4d91d2479
   timeout (0.6.1) sha256=78f57368a7e7bbadec56971f78a3f5ecbcfb59b7fcbb0a3ed6ddc08a5094accb
-  trackguard (0.9.0)
+  trackguard (0.10.0)
   tsort (0.2.0) sha256=9650a793f6859a43b6641671278f79cfead60ac714148aabe4e3f0060480089f
   turbo-rails (2.0.23) sha256=ee0d90733aafff056cf51ff11e803d65e43cae258cc55f6492020ec1f9f9315f
   tzinfo (2.0.6) sha256=8daf828cc77bcf7d63b0e3bdb6caa47e2272dcfaf4fbfe46f8c3a9df087a829b
