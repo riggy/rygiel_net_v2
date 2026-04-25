@@ -46,7 +46,7 @@ gem "rack-attack"
 gem "grover"
 gem "flipper-active_record"
 gem "ruby_llm"
-gem "trackguard", git: "https://github.com/riggy/trackguard.git", tag: "v0.9.0"
+gem "trackguard", git: "https://github.com/riggy/trackguard.git", tag: "v0.10.0"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

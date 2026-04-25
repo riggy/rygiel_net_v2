@@ -29,7 +29,6 @@ Rails.application.routes.draw do
     resources :uploads, only: [ :create ]
     resources :site_configs, only: [ :index, :edit, :update ]
     resource :analytics, only: :show
-    resources :whitelisted_ips, only: :create
     resources :blocked_user_agents, only: %i[index create]
     resources :referral_links
     resource :curriculum_vitae, only: %i[edit update], controller: "curriculum_vitae"
