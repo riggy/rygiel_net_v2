@@ -18,7 +18,8 @@ Rails.application.routes.draw do
   get "/blog/:id", to: "blog#show", as: :blog_post
 
   namespace :admin do
-    root to: "posts#index"
+    root to: "dashboard#index"
+    get :dashboard, to: "dashboard#index"
     resources :posts
     resources :projects do
       collection do
@@ -28,7 +29,6 @@ Rails.application.routes.draw do
     resources :now_entries
     resources :uploads, only: [ :create ]
     resources :site_configs, only: [ :index, :edit, :update ]
-    resource :analytics, only: :show
     resources :blocked_user_agents, only: %i[index create]
     resources :referral_links
     resource :curriculum_vitae, only: %i[edit update], controller: "curriculum_vitae"
