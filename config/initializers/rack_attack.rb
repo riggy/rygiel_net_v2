@@ -1,12 +1,5 @@
 Rack::Attack.blocklist("block known scanners") do |request|
-  patterns = Rails.cache.fetch("blocked_user_agent_patterns", expires_in: 10.minutes) do
-    BlockedUserAgent.pluck(:pattern)
-  end
-
-  user_agent = request.user_agent.to_s.downcase
-  user_agent.empty? ||
-    patterns.any? { |p| user_agent.include?(p) } ||
-    user_agent.strip == "mozilla/5.0"
+  Trackguard::BlockedUserAgent.blocked?(request.user_agent)
 end
 
 Rack::Attack.safelist("allow local/dev") do |req|

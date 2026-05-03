@@ -29,7 +29,6 @@ Rails.application.routes.draw do
     resources :now_entries
     resources :uploads, only: [ :create ]
     resources :site_configs, only: [ :index, :edit, :update ]
-    resources :blocked_user_agents, only: %i[index create]
     resources :referral_links
     resource :curriculum_vitae, only: %i[edit update], controller: "curriculum_vitae"
     get :emojis, to: "emojis#index"
