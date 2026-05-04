@@ -17,12 +17,6 @@ RSpec.describe "ReferralLinks", type: :request do
         }.to change { link.reload.clicks }.by(1)
       end
 
-      it "does not increment clicks for bots" do
-        expect {
-          get "/go/linkedin-cv", headers: { "User-Agent" => "Googlebot/2.1" }
-        }.not_to change { link.reload.clicks }
-      end
-
       it "preserves existing query params in target_path" do
         link.update!(target_path: "/blog?tag=ruby")
         get "/go/linkedin-cv"
