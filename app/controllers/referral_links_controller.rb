@@ -7,9 +7,7 @@ class ReferralLinksController < ApplicationController
       return
     end
 
-    unless Trackguard::PageViewRecorder::BOT_REGEX.match?(request.user_agent.to_s)
-      ReferralLink.increment_counter(:clicks, link.id)
-    end
+    ReferralLink.increment_counter(:clicks, link.id)
 
     redirect_to link.destination_url, status: :found, allow_other_host: false
   end
