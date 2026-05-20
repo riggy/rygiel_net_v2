@@ -5,4 +5,7 @@ Trackguard.authenticate_admin_with = proc do
   end
 end
 
-Trackguard.api_token = Rails.application.credentials.dig(:trackguard, :api_token)
+Trackguard.hub_api_key = Rails.application.credentials.dig(:trackguard, :hub_api_key)
+Trackguard.hub_secret_key = Rails.application.credentials.dig(:trackguard, :hub_secret_key)
+Trackguard.adapter = :hub
+Trackguard.hub_url = "https://app.trackguard.dev"
