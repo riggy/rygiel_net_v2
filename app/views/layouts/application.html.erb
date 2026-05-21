@@ -8,7 +8,9 @@
     <%= csp_meta_tag %>
     <%= trackguard_meta_tags %>
 
-    <%= trackguard_hub_js_tag %>
+    <% if Rails.env.production? %>
+      <script src="https://app.trackguard.dev/track.js" data-api-key="79db3a0495adfd2ee3194c56acfdba4dfa9a8b1cf09c81a8f151123e94e04ae9"></script>
+    <% end %>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
