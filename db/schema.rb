@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_21_214606) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_24_185015) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -149,6 +149,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_21_214606) do
     t.string "ip"
     t.datetime "last_seen_at", null: false
     t.string "name"
+    t.datetime "suspicious_since_at"
+    t.string "suspicious_state", default: "normal", null: false
     t.datetime "updated_at", null: false
     t.string "user_agent"
     t.index ["ip"], name: "index_trackguard_visitors_on_ip", unique: true
