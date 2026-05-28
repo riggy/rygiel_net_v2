@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/riggy/trackguard
-  revision: 668a808933cc06a938eff02b204d57f531d47379
+  revision: 87baf81120c762ebeb6491632d78bf0a5d391f3e
   specs:
     trackguard (0.28.0)
       rack-attack
