@@ -1,4 +1,5 @@
 class CurriculumVitaeController < ApplicationController
+  track_page_views
   def show
     @curriculum_vitae = CurriculumVitaePresenter.new(CurriculumVitae.current)
 
